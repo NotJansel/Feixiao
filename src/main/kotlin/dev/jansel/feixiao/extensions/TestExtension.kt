@@ -16,7 +16,7 @@ class TestExtension : Extension() {
 	override val name = "test"
 
 	override suspend fun setup() {
-		chatCommand(TestExtension::SlapArgs) {
+		chatCommand(::SlapArgs) {
 			name = "slap"
 			description = "Ask the bot to slap another user"
 
@@ -57,7 +57,7 @@ class TestExtension : Extension() {
 			}
 		}
 
-		publicSlashCommand(TestExtension::SlapSlashArgs) {
+		publicSlashCommand(::SlapSlashArgs) {
 			name = "slap"
 			description = "Ask the bot to slap another user"
 
