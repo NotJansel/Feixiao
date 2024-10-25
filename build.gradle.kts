@@ -56,7 +56,7 @@ docker {
 		// Each function (aside from comment/emptyLine) corresponds to a Dockerfile instruction.
 		// See: https://docs.docker.com/reference/dockerfile/
 
-		from("azul/zulu-openjdk-alpine:21-latest")
+		from("azul/zulu-openjdk-alpine:21-jre-headless-latest")
 
 		emptyLine()
 
