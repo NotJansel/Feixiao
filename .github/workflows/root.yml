@@ -52,4 +52,4 @@ jobs:
           context: .
           platforms: linux/amd64,linux/arm64
           push: true
-          tags: git.jansel.dev/jansel/feixiao:latest
+          tags: git.jansel.dev/jansel/Feixiao:latest
