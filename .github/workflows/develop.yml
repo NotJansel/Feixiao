@@ -25,16 +25,9 @@ jobs:
       - name: Gradle (Build)
         run: "./gradlew build"
 
-      - name: Upload artifacts (Main JAR)
-        uses: actions/upload-artifact@v4
+      - name: Upload build artifacts
+        uses: actions/upload-artifact@v3
 
         with:
-          name: Main JAR
-          path: build/libs/*-all.jar
-
-      - name: Upload artifacts (JARs)
-        uses: actions/upload-artifact@v4
-
-        with:
-          name: JARs
-          path: build/libs/*.jar
+          name: Build and Deploy Artifacts
+          path: build/libs/*[0-9].jar
