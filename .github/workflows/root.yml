@@ -42,7 +42,7 @@ jobs:
         uses: docker/login-action@v2
 
         with:
-          registry: http://10.20.1.3:3000
+          registry: git.jansel.dev
           username: ${{ github.repository_owner }}
           password: ${{ secrets.CR_PAT }}
 
@@ -52,4 +52,4 @@ jobs:
           context: .
           platforms: linux/arm64
           push: true
-          tags: jansel/feixiao:latest
+          tags: git.jansel.dev/jansel/feixiao:latest
