@@ -1,4 +1,4 @@
-package template.extensions
+package dev.jansel.feixiao.extensions
 
 import dev.kordex.core.commands.Arguments
 import dev.kordex.core.commands.converters.impl.coalescingDefaultingString
@@ -10,13 +10,13 @@ import dev.kordex.core.extensions.Extension
 import dev.kordex.core.extensions.chatCommand
 import dev.kordex.core.extensions.publicSlashCommand
 import dev.kordex.core.utils.respond
-import template.TEST_SERVER_ID
+import dev.jansel.feixiao.TEST_SERVER_ID
 
 class TestExtension : Extension() {
 	override val name = "test"
 
 	override suspend fun setup() {
-		chatCommand(::SlapArgs) {
+		chatCommand(TestExtension::SlapArgs) {
 			name = "slap"
 			description = "Ask the bot to slap another user"
 
@@ -57,7 +57,7 @@ class TestExtension : Extension() {
 			}
 		}
 
-		publicSlashCommand(::SlapSlashArgs) {
+		publicSlashCommand(TestExtension::SlapSlashArgs) {
 			name = "slap"
 			description = "Ask the bot to slap another user"
 

@@ -15,4 +15,4 @@ pluginManagement {
 	}
 }
 
-rootProject.name = "template"
+rootProject.name = "feixiao"

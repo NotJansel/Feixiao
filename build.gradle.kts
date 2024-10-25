@@ -12,7 +12,7 @@ plugins {
 	id("dev.kordex.gradle.kordex")
 }
 
-group = "template"
+group = "dev.jansel"
 version = "1.0-SNAPSHOT"
 
 dependencies {
@@ -36,7 +36,7 @@ kordEx {
 		// See https://docs.kordex.dev/data-collection.html
 		dataCollection(DataCollection.Standard)
 
-		mainClass = "template.AppKt"
+		mainClass = "dev.jansel.feixiao.AppKt"
 	}
 }
 
@@ -56,7 +56,7 @@ docker {
 		// Each function (aside from comment/emptyLine) corresponds to a Dockerfile instruction.
 		// See: https://docs.docker.com/reference/dockerfile/
 
-		from("openjdk:21-jdk-slim")
+		from("azul/zulu-openjdk-alpine:21-latest")
 
 		emptyLine()
 
