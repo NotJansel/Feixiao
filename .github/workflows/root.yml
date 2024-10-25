@@ -22,9 +22,6 @@ jobs:
       - name: Gradle (Setup)
         uses: gradle/actions/setup-gradle@v4
 
-        with:
-          dependency-graph: generate-and-submit
-
       - name: Gradle (Build)
         run: "./gradlew build"
 
