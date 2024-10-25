@@ -33,4 +33,4 @@ jobs:
 
         with:
           name: Build and Deploy Artifacts
-          path: build/libs/*[0-9].jar
+          path: build/libs/*.jar
