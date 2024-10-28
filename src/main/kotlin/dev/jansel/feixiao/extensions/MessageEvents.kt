@@ -5,6 +5,7 @@ import dev.kord.common.entity.Snowflake
 import dev.kord.core.event.message.MessageCreateEvent
 import dev.kordex.core.annotations.DoNotChain
 import dev.kordex.core.checks.anyGuild
+import dev.kordex.core.checks.inChannel
 import dev.kordex.core.checks.isNotBot
 import dev.kordex.core.checks.notHasPermission
 import dev.kordex.core.checks.notHasRole
@@ -25,6 +26,7 @@ class MessageEvents : Extension() {
 				isNotBot()
 				notHasPermission(Permission.ManageMessages)
 				notHasRole(Snowflake(1130937397132152852))
+				inChannel(Snowflake(1130942639764676709))
 			}
 			action {
 				val calendar = Calendar.getInstance()
