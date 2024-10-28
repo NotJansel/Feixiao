@@ -31,14 +31,15 @@ class MessageEvents : Extension() {
 			action {
 				println("Message detected!")
 				val calendar = Calendar.getInstance()
+				calendar.timeZone = TimeZone.getTimeZone("Europe/Berlin")
 				calendar.time = Date()
 				val hour = calendar.get(Calendar.HOUR_OF_DAY)
 				val day = calendar.get(Calendar.DAY_OF_WEEK)
-				if ((day == Calendar.MONDAY && hour < 5) || (day == Calendar.MONDAY && hour >= 21) ||
-					(day == Calendar.TUESDAY && hour < 5) || (day == Calendar.TUESDAY && hour >= 21) ||
-					(day == Calendar.WEDNESDAY && hour < 5) || (day == Calendar.WEDNESDAY && hour >= 21) ||
-					(day == Calendar.THURSDAY && hour < 5) || (day == Calendar.THURSDAY && hour >= 21) ||
-					(day == Calendar.FRIDAY && hour < 5) || (day == Calendar.SUNDAY && hour >= 21)
+				if ((day == Calendar.MONDAY && hour < 6) || (day == Calendar.MONDAY && hour >= 22) ||
+					(day == Calendar.TUESDAY && hour < 6) || (day == Calendar.TUESDAY && hour >= 22) ||
+					(day == Calendar.WEDNESDAY && hour < 6) || (day == Calendar.WEDNESDAY && hour >= 22) ||
+					(day == Calendar.THURSDAY && hour < 6) || (day == Calendar.THURSDAY && hour >= 22) ||
+					(day == Calendar.FRIDAY && hour < 6) || (day == Calendar.SUNDAY && hour >= 22)
 				) {
 					event.message.delete()
 					event.member!!.timeout(7.days, "ES HERRSCHT RUHEZEIT!")
