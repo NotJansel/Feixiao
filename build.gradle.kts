@@ -6,7 +6,6 @@ plugins {
 	kotlin("plugin.serialization")
 
 	id("com.github.johnrengelman.shadow")
-	id("io.gitlab.arturbosch.detekt")
 
 	id("dev.kordex.gradle.docker")
 	id("dev.kordex.gradle.kordex")
@@ -38,12 +37,6 @@ kordEx {
 
 		mainClass = "dev.jansel.feixiao.AppKt"
 	}
-}
-
-detekt {
-	buildUponDefaultConfig = true
-
-	config.from(rootProject.files("detekt.yml"))
 }
 
 // Automatically generate a Dockerfile. Set `generateOnBuild` to `false` if you'd prefer to manually run the
