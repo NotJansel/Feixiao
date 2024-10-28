@@ -18,6 +18,8 @@ dependencies {
 
 	implementation(libs.kotlin.stdlib)
 	implementation(libs.kx.ser)
+	implementation(libs.kx.coroutines)
+	implementation(libs.twitch4j)
 
 	// Logging dependencies
 	implementation(libs.groovy)
