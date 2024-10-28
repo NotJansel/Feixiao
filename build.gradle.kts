@@ -15,7 +15,6 @@ group = "dev.jansel"
 version = "1.0-SNAPSHOT"
 
 dependencies {
-	detektPlugins(libs.detekt)
 
 	implementation(libs.kotlin.stdlib)
 	implementation(libs.kx.ser)
