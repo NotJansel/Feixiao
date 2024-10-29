@@ -34,7 +34,7 @@ class EventHooks : Extension() {
 						launch {
 							val onlineLog =
 								kord.getGuildOrNull(tserverid)?.getChannelOf<GuildMessageChannel>(tchannelid)
-							onlineLog?.createMessage("${it.channel} is now live at https://twitch.tv/${it.channel}")
+							onlineLog?.createMessage("<@&1130981452130037800> ${it.channel.name} is now live at https://twitch.tv/${it.channel.name}")
 						}
 					}
 				}
