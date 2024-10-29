@@ -6,10 +6,13 @@ package dev.jansel.feixiao
 import dev.jansel.feixiao.extensions.EventHooks
 import dev.jansel.feixiao.extensions.MessageEvents
 import dev.jansel.feixiao.utils.*
+import dev.kordex.core.DATA_COLLECTION
 import dev.kordex.core.ExtensibleBot
+import dev.kordex.data.api.DataCollection
 
 suspend fun main() {
 	val bot = ExtensibleBot(token) {
+		dataCollectionMode = DataCollection.None
 		extensions {
 			add(::MessageEvents)
 			add(::EventHooks)

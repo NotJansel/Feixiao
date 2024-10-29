@@ -29,7 +29,6 @@ class EventHooks : Extension() {
 					.withClientSecret(twitchcs)
 					.build()
 				twitchClient.clientHelper.enableStreamEventListener("janselosu")
-				// Register a listener for when the channel goes live
 				twitchClient.eventManager.onEvent(ChannelGoLiveEvent::class.java) {
 					runBlocking {
 						launch {
