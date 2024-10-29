@@ -1,6 +1,7 @@
 package dev.jansel.feixiao.extensions
 
 import com.github.twitch4j.TwitchClientBuilder
+import com.github.twitch4j.events.ChannelChangeTitleEvent
 import com.github.twitch4j.events.ChannelGoLiveEvent
 import com.github.twitch4j.events.ChannelGoOfflineEvent
 import dev.jansel.feixiao.utils.tchannelid
@@ -43,6 +44,13 @@ class EventHooks : Extension() {
 					runBlocking {
 						launch {
 							kord.editPresence { playing("osu!") }
+						}
+					}
+				}
+				twitchClient.eventManager.onEvent(ChannelChangeTitleEvent::class.java) {
+					runBlocking {
+						launch {
+							kord.editPresence { streaming(it.title, "https://twitch.tv/${it.channel.name}") }
 						}
 					}
 				}
