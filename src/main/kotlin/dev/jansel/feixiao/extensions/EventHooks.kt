@@ -32,9 +32,9 @@ class EventHooks : Extension() {
 				twitchClient.eventManager.onEvent(ChannelGoLiveEvent::class.java) {
 					runBlocking {
 						launch {
-							val onlineLog =
+							val twitchpingschannel =
 								kord.getGuildOrNull(tserverid)?.getChannelOf<GuildMessageChannel>(tchannelid)
-							onlineLog?.createMessage("<@&1130981452130037800> ${it.channel.name} is now live at https://twitch.tv/${it.channel.name}")
+							twitchpingschannel?.createMessage("<@&1130981452130037800> ${it.channel.name} is now live at https://twitch.tv/${it.channel.name} streaming ${it.stream.gameName}: ${it.stream.title}")
 						}
 					}
 				}
