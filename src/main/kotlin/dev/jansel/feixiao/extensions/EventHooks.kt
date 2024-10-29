@@ -2,6 +2,7 @@ package dev.jansel.feixiao.extensions
 
 import com.github.twitch4j.TwitchClientBuilder
 import com.github.twitch4j.events.ChannelGoLiveEvent
+import com.github.twitch4j.events.ChannelGoOfflineEvent
 import dev.jansel.feixiao.utils.tchannelid
 import dev.jansel.feixiao.utils.tserverid
 import dev.jansel.feixiao.utils.twitchcid
@@ -21,7 +22,7 @@ class EventHooks : Extension() {
 		event<ReadyEvent> {
 			action {
 				println("Bot is ready!")
-
+				kord.editPresence { playing("osu!") }
 				val twitchClient = TwitchClientBuilder.builder()
 					.withEnableHelix(true)
 					.withClientId(twitchcid)
@@ -35,6 +36,14 @@ class EventHooks : Extension() {
 							val twitchpingschannel =
 								kord.getGuildOrNull(tserverid)?.getChannelOf<GuildMessageChannel>(tchannelid)
 							twitchpingschannel?.createMessage("<@&1130981452130037800> ${it.channel.name} is now live at https://twitch.tv/${it.channel.name} streaming ${it.stream.gameName}: ${it.stream.title}")
+							kord.editPresence { streaming(it.stream.title, "https://twitch.tv/${it.channel.name}") }
+						}
+					}
+				}
+				twitchClient.eventManager.onEvent(ChannelGoOfflineEvent::class.java) {
+					runBlocking {
+						launch {
+							kord.editPresence { playing("osu!") }
 						}
 					}
 				}
