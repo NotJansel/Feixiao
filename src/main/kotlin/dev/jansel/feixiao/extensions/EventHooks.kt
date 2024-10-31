@@ -31,6 +31,7 @@ class EventHooks : Extension() {
 					.build()
 				twitchClient.clientHelper.enableStreamEventListener("janselosu")
 				twitchClient.eventManager.onEvent(ChannelGoLiveEvent::class.java) {
+					println("${it.channel.name} went live!")
 					runBlocking {
 						launch {
 							val twitchpingschannel =
@@ -41,6 +42,7 @@ class EventHooks : Extension() {
 					}
 				}
 				twitchClient.eventManager.onEvent(ChannelGoOfflineEvent::class.java) {
+					println("${it.channel.name} went offline.")
 					runBlocking {
 						launch {
 							kord.editPresence { playing("osu!") }
@@ -48,6 +50,7 @@ class EventHooks : Extension() {
 					}
 				}
 				twitchClient.eventManager.onEvent(ChannelChangeTitleEvent::class.java) {
+					println("Title changed to ${it.title}")
 					runBlocking {
 						launch {
 							kord.editPresence { streaming(it.title, "https://twitch.tv/${it.channel.name}") }
