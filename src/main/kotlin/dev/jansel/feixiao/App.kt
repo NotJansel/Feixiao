@@ -3,20 +3,48 @@
  */
 package dev.jansel.feixiao
 
+import com.github.twitch4j.TwitchClientBuilder
+import com.github.twitch4j.events.ChannelChangeTitleEvent
+import com.github.twitch4j.events.ChannelGoLiveEvent
+import com.github.twitch4j.events.ChannelGoOfflineEvent
 import dev.jansel.feixiao.extensions.EventHooks
 import dev.jansel.feixiao.extensions.MessageEvents
 import dev.jansel.feixiao.utils.*
-import dev.kordex.core.DATA_COLLECTION
+import dev.kord.core.behavior.getChannelOf
+import dev.kord.core.entity.channel.GuildMessageChannel
 import dev.kordex.core.ExtensibleBot
 import dev.kordex.data.api.DataCollection
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.runBlocking
 
 suspend fun main() {
 	val bot = ExtensibleBot(token) {
+		database(true)
 		dataCollectionMode = DataCollection.None
 		extensions {
 			add(::MessageEvents)
 			add(::EventHooks)
 		}
 	}
+	val twitchClient = TwitchClientBuilder.builder()
+		.withEnableHelix(true)
+		.withClientId(twitchcid)
+		.withClientSecret(twitchcs)
+		.build()
+
+	twitchClient.clientHelper.enableStreamEventListener("janselosu")
+
+	twitchClient.eventManager.onEvent(ChannelGoLiveEvent::class.java) {
+		println("${it.channel.name} went live!")
+		runBlocking {
+			launch {
+				val twitchpingschannel =
+					bot.kordRef.getGuildOrNull(tserverid)?.getChannelOf<GuildMessageChannel>(tchannelid)
+				twitchpingschannel?.createMessage("<@&1130981452130037800> ${it.channel.name} is now live at https://twitch.tv/${it.channel.name} streaming ${it.stream.gameName}: ${it.stream.title}")
+				bot.kordRef.editPresence { streaming(it.stream.title, "https://twitch.tv/${it.channel.name}") }
+			}
+		}
+	}
+
 	bot.start()
 }

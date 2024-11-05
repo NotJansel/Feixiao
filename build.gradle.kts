@@ -20,6 +20,7 @@ dependencies {
 	implementation(libs.kx.ser)
 	implementation(libs.kx.coroutines)
 	implementation(libs.twitch4j)
+	implementation(libs.kmongo)
 
 	// Logging dependencies
 	implementation(libs.groovy)
@@ -31,6 +32,8 @@ dependencies {
 
 kordEx {
 	kordExVersion = "2.3.1-SNAPSHOT"
+
+	jvmTarget = 21
 
 	bot {
 		// See https://docs.kordex.dev/data-collection.html
@@ -78,4 +81,9 @@ docker {
 			"-jar", "/bot/bot.jar"
 		)
 	}
+}
+
+tasks.wrapper {
+	gradleVersion = "8.10.2"
+	distributionType = Wrapper.DistributionType.BIN
 }

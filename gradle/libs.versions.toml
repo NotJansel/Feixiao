@@ -10,6 +10,7 @@ logging = "7.0.0"
 twitch4j = "1.22.0"
 events4j = "0.12.2"
 kx-coroutines = "1.9.0"
+kmongo = "4.9.0"
 
 [libraries]
 groovy = { module = "org.codehaus.groovy:groovy", version.ref = "groovy" }
@@ -22,3 +23,4 @@ logback-groovy = { module = "io.github.virtualdogbert:logback-groovy-config", ve
 logging = { module = "io.github.oshai:kotlin-logging", version.ref = "logging" }
 twitch4j = { module = "com.github.twitch4j:twitch4j", version.ref = "twitch4j" }
 events4j = { module = "com.github.philippheuer.events4j:events4j-handler-simple", version.ref = "events4j" }
+kmongo = { module="org.litote.kmongo:kmongo-coroutine-serialization", version.ref = "kmongo"}
