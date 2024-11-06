@@ -62,7 +62,7 @@ class StreamerCommand : Extension() {
 			require(true)
 		}
 		val channel by snowflake {
-			name = "announceChannel"
+			name = "announcechannel"
 			description = "Channel where the bot will send a message when the streamer goes live"
 			require(true)
 		}
