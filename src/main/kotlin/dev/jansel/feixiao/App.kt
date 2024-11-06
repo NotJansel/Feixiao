@@ -43,7 +43,7 @@ suspend fun main() {
 				val channel = bot.kordRef.getChannelOf<GuildMessageChannel>(streamer!!.servers.first().channelId)
 				val role = streamer.servers.first().roleId
 				if (role != null) {
-					channel?.createMessage("<@&$role> ${it.channel.name} went live streaming ${it.stream.gameName}: ${it.stream.title}")
+					channel?.createMessage("<@&$role> https://twitch.tv/${it.channel.name} went live streaming ${it.stream.gameName}: ${it.stream.title}")
 				} else {
 					channel?.createMessage("${it.channel.name} went live: ${it.stream.title}")
 				}
