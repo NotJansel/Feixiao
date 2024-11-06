@@ -19,9 +19,9 @@ class StreamerCommand : Extension() {
 			name = "streamer"
 			description = "Streamer commands"
 
-			publicSubCommand(::StreamerArgs) {
+			publicSubCommand(::AddStreamerArgs) {
 				name = "add"
-				description = "Add a streamer to the listener"
+				description = "Add a streamer to the listener of this server"
 				check {
 					anyGuild()
 					hasPermission(Permission.ManageGuild)
@@ -35,10 +35,26 @@ class StreamerCommand : Extension() {
 					}
 				}
 			}
+
+			publicSubCommand(::RemoveStreamerArgs) {
+				name = "remove"
+				description = "Remove a streamer from the listener of this server"
+				check {
+					anyGuild()
+					hasPermission(Permission.ManageGuild)
+				}
+				action {
+					val streamer = arguments.streamer
+					StreamerCollection().removeData(guild!!.id, channel.id, streamer, null)
+					respond {
+						content = "Removed streamer $streamer"
+					}
+				}
+			}
 		}
 	}
 
-	inner class StreamerArgs : Arguments() {
+	inner class AddStreamerArgs : Arguments() {
 		val streamer by string {
 			name = "streamer"
 			description = "The streamer to add"
@@ -56,4 +72,11 @@ class StreamerCommand : Extension() {
 		}
 	}
 
+	inner class RemoveStreamerArgs : Arguments() {
+		val streamer by string {
+			name = "streamer"
+			description = "The streamer to remove"
+			require(true)
+		}
+	}
 }
