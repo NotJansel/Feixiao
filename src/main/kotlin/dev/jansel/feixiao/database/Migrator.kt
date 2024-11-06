@@ -36,7 +36,7 @@ object Migrator : KordExKoinComponent {
 				when (nextVersion) {
 					1 -> ::v1
 					else -> break
-				} (db.mongo)
+				}(db.mongo)
 
 				logger.info { "Migrated database to version $nextVersion." }
 			} catch (t: Throwable) {

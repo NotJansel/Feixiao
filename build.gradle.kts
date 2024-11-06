@@ -31,7 +31,7 @@ dependencies {
 }
 
 kordEx {
-	kordExVersion = "2.3.1-SNAPSHOT"
+	kordExVersion = "2.2.1-SNAPSHOT"
 
 	jvmTarget = 21
 

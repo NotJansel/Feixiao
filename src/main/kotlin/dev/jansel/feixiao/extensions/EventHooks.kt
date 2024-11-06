@@ -11,7 +11,7 @@ class EventHooks : Extension() {
 		event<ReadyEvent> {
 			action {
 				println("Bot is ready!")
-				kord.editPresence { "electing a president..." }
+				kord.editPresence { listening("to the database") }
 			}
 		}
 	}

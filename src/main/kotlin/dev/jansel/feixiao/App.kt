@@ -3,19 +3,21 @@
  */
 package dev.jansel.feixiao
 
+import com.github.twitch4j.TwitchClient
 import com.github.twitch4j.TwitchClientBuilder
-import com.github.twitch4j.events.ChannelChangeTitleEvent
 import com.github.twitch4j.events.ChannelGoLiveEvent
-import com.github.twitch4j.events.ChannelGoOfflineEvent
+import dev.jansel.feixiao.database.collections.StreamerCollection
 import dev.jansel.feixiao.extensions.EventHooks
 import dev.jansel.feixiao.extensions.MessageEvents
+import dev.jansel.feixiao.extensions.StreamerCommand
 import dev.jansel.feixiao.utils.*
-import dev.kord.core.behavior.getChannelOf
 import dev.kord.core.entity.channel.GuildMessageChannel
 import dev.kordex.core.ExtensibleBot
 import dev.kordex.data.api.DataCollection
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
+
+var twitchClient: TwitchClient? = null
 
 suspend fun main() {
 	val bot = ExtensibleBot(token) {
@@ -24,27 +26,32 @@ suspend fun main() {
 		extensions {
 			add(::MessageEvents)
 			add(::EventHooks)
+			add(::StreamerCommand)
 		}
 	}
-	val twitchClient = TwitchClientBuilder.builder()
+	twitchClient = TwitchClientBuilder.builder()
 		.withEnableHelix(true)
 		.withClientId(twitchcid)
 		.withClientSecret(twitchcs)
 		.build()
 
-	twitchClient.clientHelper.enableStreamEventListener("janselosu")
-
-	twitchClient.eventManager.onEvent(ChannelGoLiveEvent::class.java) {
+	twitchClient!!.eventManager.onEvent(ChannelGoLiveEvent::class.java) {
 		println("${it.channel.name} went live!")
 		runBlocking {
 			launch {
-				val twitchpingschannel =
-					bot.kordRef.getGuildOrNull(tserverid)?.getChannelOf<GuildMessageChannel>(tchannelid)
-				twitchpingschannel?.createMessage("<@&1130981452130037800> ${it.channel.name} is now live at https://twitch.tv/${it.channel.name} streaming ${it.stream.gameName}: ${it.stream.title}")
-				bot.kordRef.editPresence { streaming(it.stream.title, "https://twitch.tv/${it.channel.name}") }
+				val streamer = StreamerCollection().getData(it.channel.name)
+				val channel = bot.kordRef.getChannelOf<GuildMessageChannel>(streamer!!.servers.first().channelId)
+				val role = streamer.servers.first().roleId
+				if (role != null) {
+					channel?.createMessage("<@&$role> ${it.channel.name} went live streaming ${it.stream.gameName}: ${it.stream.title}")
+				} else {
+					channel?.createMessage("${it.channel.name} went live: ${it.stream.title}")
+				}
 			}
 		}
 	}
 
 	bot.start()
 }
+
+
