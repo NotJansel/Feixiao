@@ -4,4 +4,6 @@
 
 Blanketbot is a Discord bot, coded to notify you when your favorite streamer goes live. To simply set it up, add the Bot to your server through the Invite link above and use the `/streamer add` command to add your favorite streamer. The bot will then notify you when the streamer goes live.
 
+This bot also includes a special feature for the discord of jansel, where you get timeouted when you write during german rest times (22:00 - 06:00, except weekends).
+
 If issues arise, please don't hesitate to create an issue here on GitHub.
