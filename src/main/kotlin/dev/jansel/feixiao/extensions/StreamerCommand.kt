@@ -13,7 +13,7 @@ import dev.kordex.core.extensions.Extension
 import dev.kordex.core.extensions.publicSlashCommand
 
 class StreamerCommand : Extension() {
-	override val name = "streamer"
+	override val name = "streaming"
 	override suspend fun setup() {
 		publicSlashCommand {
 			name = "streamer"

@@ -17,6 +17,7 @@ class EventHooks : Extension() {
 				// check every entry in the database and enable the stream event listener
 				StreamerCollection().collection.find().toList().forEach {
 					twitchClient!!.clientHelper.enableStreamEventListener(it.name)
+					println("Enabled stream event listener for ${it.name}")
 				}
 			}
 		}
