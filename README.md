@@ -1,5 +1,4 @@
 # Blanketbot
--# Codename Feixiao
 
 [Invite](https://discord.com/oauth2/authorize?client_id=1130933938408403034)
 
