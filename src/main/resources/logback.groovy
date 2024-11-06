@@ -1,4 +1,5 @@
 import ch.qos.logback.core.joran.spi.ConsoleTarget
+import ch.qos.logback.core.ConsoleAppender
 
 def environment = System.getenv("ENVIRONMENT") ?: "production"
 
