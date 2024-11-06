@@ -29,7 +29,7 @@ class StreamerCommand : Extension() {
 				}
 				action {
 					val streamer = arguments.streamer
-					StreamerCollection().updateData(guild!!.id, channel.id, streamer, arguments.role)
+					StreamerCollection().updateData(guild!!.id, arguments.channel, streamer, arguments.role)
 					twitchClient!!.clientHelper.enableStreamEventListener(streamer)
 					respond {
 						content = "Added streamer $streamer"

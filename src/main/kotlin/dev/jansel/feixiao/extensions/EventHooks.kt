@@ -13,7 +13,7 @@ class EventHooks : Extension() {
 		event<ReadyEvent> {
 			action {
 				println("Bot is ready!")
-				kord.editPresence { listening("to the database") }
+				kord.editPresence { listening("the database") }
 				// check every entry in the database and enable the stream event listener
 				StreamerCollection().collection.find().toList().forEach {
 					twitchClient!!.clientHelper.enableStreamEventListener(it.name)
