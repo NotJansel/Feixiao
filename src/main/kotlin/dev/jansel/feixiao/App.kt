@@ -13,10 +13,12 @@ import dev.jansel.feixiao.utils.*
 import dev.kord.core.entity.channel.GuildMessageChannel
 import dev.kordex.core.ExtensibleBot
 import dev.kordex.data.api.DataCollection
+import io.github.oshai.kotlinlogging.KotlinLogging
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 
 var twitchClient: TwitchClient? = null
+val logger = KotlinLogging.logger {  }
 
 suspend fun main() {
 	val bot = ExtensibleBot(token) {
@@ -34,7 +36,7 @@ suspend fun main() {
 		.build()
 
 	twitchClient!!.eventManager.onEvent(ChannelGoLiveEvent::class.java) {
-		println("${it.channel.name} went live!")
+		logger.info { "${it.channel.name} went live!" }
 		runBlocking {
 			launch {
 				val streamer = StreamerCollection().getData(it.channel.name)
