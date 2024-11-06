@@ -7,8 +7,8 @@ import dev.kordex.core.checks.anyGuild
 import dev.kordex.core.checks.hasPermission
 import dev.kordex.core.commands.Arguments
 import dev.kordex.core.commands.application.slash.publicSubCommand
-import dev.kordex.core.commands.converters.impl.optionalSnowflake
-import dev.kordex.core.commands.converters.impl.snowflake
+import dev.kordex.core.commands.converters.impl.channel
+import dev.kordex.core.commands.converters.impl.optionalRole
 import dev.kordex.core.commands.converters.impl.string
 import dev.kordex.core.extensions.Extension
 import dev.kordex.core.extensions.publicSlashCommand
@@ -29,7 +29,7 @@ class StreamerCommand : Extension() {
 				}
 				action {
 					val streamer = arguments.streamer
-					StreamerCollection().updateData(guild!!.id, arguments.channel, streamer, arguments.role)
+					StreamerCollection().updateData(guild!!.id, arguments.channel.id, streamer, arguments.role?.id)
 					twitchClient!!.clientHelper.enableStreamEventListener(streamer)
 					respond {
 						content = "Added streamer $streamer"
@@ -61,12 +61,12 @@ class StreamerCommand : Extension() {
 			description = "The streamer to add"
 			require(true)
 		}
-		val channel by snowflake {
+		val channel by channel {
 			name = "announcechannel"
 			description = "Channel where the bot will send a message when the streamer goes live"
 			require(true)
 		}
-		val role by optionalSnowflake {
+		val role by optionalRole {
 			name = "role"
 			description = "Role to ping when the streamer goes live"
 		}
