@@ -7,6 +7,7 @@ import dev.kordex.core.checks.anyGuild
 import dev.kordex.core.checks.hasPermission
 import dev.kordex.core.commands.Arguments
 import dev.kordex.core.commands.application.slash.publicSubCommand
+import dev.kordex.core.commands.converters.impl.optionalSnowflake
 import dev.kordex.core.commands.converters.impl.snowflake
 import dev.kordex.core.commands.converters.impl.string
 import dev.kordex.core.extensions.Extension
@@ -65,10 +66,9 @@ class StreamerCommand : Extension() {
 			description = "Channel where the bot will send a message when the streamer goes live"
 			require(true)
 		}
-		val role by snowflake {
+		val role by optionalSnowflake {
 			name = "role"
 			description = "Role to ping when the streamer goes live"
-			require(false)
 		}
 	}
 
