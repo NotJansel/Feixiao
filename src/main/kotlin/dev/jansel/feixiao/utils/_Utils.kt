@@ -2,6 +2,7 @@ package dev.jansel.feixiao.utils
 
 import dev.jansel.feixiao.database.Database
 import dev.jansel.feixiao.database.collections.MetaCollection
+import dev.jansel.feixiao.database.collections.StreamerCollection
 import dev.kord.common.entity.Snowflake
 import dev.kordex.core.builders.ExtensibleBotBuilder
 import dev.kordex.core.utils.env
@@ -27,6 +28,7 @@ suspend inline fun ExtensibleBotBuilder.database(migrate: Boolean) {
 
 			loadModule {
 				single { MetaCollection() } bind MetaCollection::class
+				single { StreamerCollection() } bind StreamerCollection::class
 			}
 
 			if (migrate) {
