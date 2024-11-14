@@ -36,6 +36,8 @@ hs_err_pid*
 .idea/**/shelf
 .idea/.name
 .idea/kotlinc.xml
+.idea/compiler.xml
+.idea/misc.xml
 
 # Generated files
 .idea/**/contentModel.xml
