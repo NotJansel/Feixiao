@@ -19,39 +19,20 @@ import kotlinx.coroutines.runBlocking
 
 var twitchClient: TwitchClient? = null
 val logger = KotlinLogging.logger {  }
+var botRef : ExtensibleBot? = null
 
 suspend fun main() {
-	val bot = ExtensibleBot(token) {
+	botRef = ExtensibleBot(token) {
 		database(true)
+		twitch(true)
 		dataCollectionMode = DataCollection.None
 		extensions {
 			add(::EventHooks)
 			add(::StreamerCommand)
 		}
 	}
-	twitchClient = TwitchClientBuilder.builder()
-		.withEnableHelix(true)
-		.withClientId(twitchcid)
-		.withClientSecret(twitchcs)
-		.build()
 
-	twitchClient!!.eventManager.onEvent(ChannelGoLiveEvent::class.java) {
-		logger.info { "${it.channel.name} went live!" }
-		runBlocking {
-			launch {
-				val streamer = StreamerCollection().getData(it.channel.name)
-				val channel = bot.kordRef.getChannelOf<GuildMessageChannel>(streamer!!.servers.first().channelId)
-				val role = streamer.servers.first().roleId
-				if (role != null) {
-					channel?.createMessage("<@&$role> https://twitch.tv/${it.channel.name} went live streaming ${it.stream.gameName}: ${it.stream.title}")
-				} else {
-					channel?.createMessage("${it.channel.name} went live: ${it.stream.title}")
-				}
-			}
-		}
-	}
-
-	bot.start()
+	botRef!!.start()
 }
 
 
