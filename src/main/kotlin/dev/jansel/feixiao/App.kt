@@ -3,17 +3,13 @@
  */
 package dev.jansel.feixiao
 
-import com.github.philippheuer.events4j.reactor.ReactorEventHandler
 import com.github.twitch4j.TwitchClient
 import com.github.twitch4j.TwitchClientBuilder
 import com.github.twitch4j.events.ChannelGoLiveEvent
 import dev.jansel.feixiao.database.collections.StreamerCollection
 import dev.jansel.feixiao.extensions.EventHooks
 import dev.jansel.feixiao.extensions.StreamerCommand
-import dev.jansel.feixiao.utils.database
-import dev.jansel.feixiao.utils.token
-import dev.jansel.feixiao.utils.twitchcid
-import dev.jansel.feixiao.utils.twitchcs
+import dev.jansel.feixiao.utils.*
 import dev.kord.core.entity.channel.GuildMessageChannel
 import dev.kordex.core.ExtensibleBot
 import dev.kordex.core.i18n.SupportedLocales
@@ -22,11 +18,13 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 
 var twitchClient: TwitchClient? = null
-val logger = KotlinLogging.logger { }
+val logger = KotlinLogging.logger {  }
+var botRef : ExtensibleBot? = null
 
 suspend fun main() {
-	val bot = ExtensibleBot(token) {
+	botRef = ExtensibleBot(token) {
 		database(true)
+		twitch(true)
 		extensions {
 			add(::EventHooks)
 			add(::StreamerCommand)
@@ -35,55 +33,8 @@ suspend fun main() {
 			applicationCommandLocale(SupportedLocales.ENGLISH, SupportedLocales.GERMAN)
 		}
 	}
-	twitchClient = TwitchClientBuilder.builder()
-		.withEnableHelix(true)
-		.withClientId(twitchcid)
-		.withClientSecret(twitchcs)
-		.withDefaultEventHandler(ReactorEventHandler::class.java)
-		.build()
 
-	twitchClient!!.eventManager.onEvent(ChannelGoLiveEvent::class.java) {
-		logger.info { "${it.channel.name} went live!" }
-		runBlocking {
-			launch {
-				val streamer = StreamerCollection().getData(it.channel.name)
-				for (server in streamer!!.servers) {
-					val channel = bot.kordRef.getChannelOf<GuildMessageChannel>(server.channelId)
-					val role = server.roleId
-					val livemessage = server.liveMessage
-
-					if (role != null) {
-						if (livemessage != null) {
-							channel?.createMessage(
-								livemessage
-									.replace("{name}", it.channel.name)
-									.replace("{category}", it.stream.gameName)
-									.replace("{title}", it.stream.title)
-									.replace("{url}", "https://twitch.tv/${it.channel.name}")
-									.replace("{role}", "<@&$role>")
-							)
-						} else {
-							channel?.createMessage("<@&$role> https://twitch.tv/${it.channel.name} went live streaming ${it.stream.gameName}: ${it.stream.title}")
-						}
-					} else {
-						if (livemessage != null) {
-							channel?.createMessage(
-								livemessage
-									.replace("{name}", it.channel.name)
-									.replace("{category}", it.stream.gameName)
-									.replace("{title}", it.stream.title)
-									.replace("{url}", "https://twitch.tv/${it.channel.name}")
-							)
-						} else {
-							channel?.createMessage("https://twitch.tv/${it.channel.name} went live streaming ${it.stream.gameName}: ${it.stream.title}")
-						}
-					}
-				}
-			}
-		}
-	}
-
-	bot.start()
+	botRef!!.start()
 }
 
 
