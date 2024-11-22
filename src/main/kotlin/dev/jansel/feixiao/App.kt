@@ -45,7 +45,7 @@ suspend fun main() {
 				if (role != null) {
 					channel?.createMessage("<@&$role> https://twitch.tv/${it.channel.name} went live streaming ${it.stream.gameName}: ${it.stream.title}")
 				} else {
-					channel?.createMessage("${it.channel.name} went live: ${it.stream.title}")
+					channel?.createMessage("https://twitch.tv/${it.channel.name} went live streaming ${it.stream.gameName}: ${it.stream.title}")
 				}
 			}
 		}
