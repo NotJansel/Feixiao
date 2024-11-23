@@ -13,5 +13,6 @@ data class StreamerData(
 data class Server(
 	val guildId: Snowflake,
 	val channelId: Snowflake,
-	val roleId: Snowflake?
+	val roleId: Snowflake?,
+	val liveMessage: String?
 )
