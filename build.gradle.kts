@@ -32,12 +32,12 @@ dependencies {
 
 kordEx {
 	kordExVersion = "2.2.1-SNAPSHOT"
-
+	kordVersion = "0.16.0-SNAPSHOT"
 	jvmTarget = 21
 
 	bot {
 		// See https://docs.kordex.dev/data-collection.html
-		dataCollection(DataCollection.Standard)
+		dataCollection(DataCollection.None)
 
 		mainClass = "dev.jansel.feixiao.AppKt"
 	}

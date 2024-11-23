@@ -23,7 +23,6 @@ val logger = KotlinLogging.logger {  }
 suspend fun main() {
 	val bot = ExtensibleBot(token) {
 		database(true)
-		dataCollectionMode = DataCollection.None
 		extensions {
 			add(::EventHooks)
 			add(::StreamerCommand)
