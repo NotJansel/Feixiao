@@ -29,7 +29,7 @@ class StreamerCommand : Extension() {
 				}
 				action {
 					val streamer = arguments.streamer
-					StreamerCollection().updateData(guild!!.id, arguments.channel.id, streamer, arguments.role?.id)
+					StreamerCollection().updateData(guild!!.id, arguments.channel.id, streamer, arguments.role?.id, arguments.message)
 					twitchClient!!.clientHelper.enableStreamEventListener(streamer)
 					respond {
 						content = "Added streamer $streamer"
@@ -46,7 +46,7 @@ class StreamerCommand : Extension() {
 				}
 				action {
 					val streamer = arguments.streamer
-					StreamerCollection().removeData(guild!!.id, channel.id, streamer, null)
+					StreamerCollection().removeData(guild!!.id, channel.id, streamer, null, null)
 					respond {
 						content = "Removed streamer $streamer"
 					}
@@ -69,6 +69,10 @@ class StreamerCommand : Extension() {
 		val role by optionalRole {
 			name = "role"
 			description = "Role to ping when the streamer goes live"
+		}
+		val message by string {
+			name = "message"
+			description = "Message to send when the streamer goes live. Possible placeholders: {url}, {name}, {title}, {category}, {role} (if set)"
 		}
 	}
 

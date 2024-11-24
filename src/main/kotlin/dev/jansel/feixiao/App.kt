@@ -12,7 +12,6 @@ import dev.jansel.feixiao.extensions.StreamerCommand
 import dev.jansel.feixiao.utils.*
 import dev.kord.core.entity.channel.GuildMessageChannel
 import dev.kordex.core.ExtensibleBot
-import dev.kordex.data.api.DataCollection
 import io.github.oshai.kotlinlogging.KotlinLogging
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
@@ -39,12 +38,33 @@ suspend fun main() {
 		runBlocking {
 			launch {
 				val streamer = StreamerCollection().getData(it.channel.name)
-				val channel = bot.kordRef.getChannelOf<GuildMessageChannel>(streamer!!.servers.first().channelId)
-				val role = streamer.servers.first().roleId
-				if (role != null) {
-					channel?.createMessage("<@&$role> https://twitch.tv/${it.channel.name} went live streaming ${it.stream.gameName}: ${it.stream.title}")
-				} else {
-					channel?.createMessage("https://twitch.tv/${it.channel.name} went live streaming ${it.stream.gameName}: ${it.stream.title}")
+				for (server in streamer!!.servers) {
+					val channel = bot.kordRef.getChannelOf<GuildMessageChannel>(server.channelId)
+					val role = server.roleId
+					val livemessage = server.liveMessage
+
+					if (role != null) {
+						if (livemessage != null) {
+							channel?.createMessage(livemessage
+								.replace("{name}", it.channel.name)
+								.replace("{category}", it.stream.gameName)
+								.replace("{title}", it.stream.title)
+								.replace("{url}", "https://twitch.tv/${it.channel.name}")
+								.replace("{role}", "<@&$role>"))
+						} else {
+							channel?.createMessage("<@&$role> https://twitch.tv/${it.channel.name} went live streaming ${it.stream.gameName}: ${it.stream.title}")
+						}
+					} else {
+						if (livemessage != null) {
+							channel?.createMessage(livemessage
+								.replace("{name}", it.channel.name)
+								.replace("{category}", it.stream.gameName)
+								.replace("{title}", it.stream.title)
+								.replace("{url}", "https://twitch.tv/${it.channel.name}"))
+						} else {
+							channel?.createMessage("https://twitch.tv/${it.channel.name} went live streaming ${it.stream.gameName}: ${it.stream.title}")
+						}
+					}
 				}
 			}
 		}
