@@ -72,7 +72,7 @@ class StreamerCommand : Extension() {
 		}
 		val message by string {
 			name = "message"
-			description = "Message to send when the streamer goes live. Possible placeholders: {url}, {name}, {title}, {category}, {role} (if set)"
+			description = "Message to send when the streamer goes live. Possible placeholders (put in curly braces!!): url, name, title, category, role (if set)"
 		}
 	}
 
