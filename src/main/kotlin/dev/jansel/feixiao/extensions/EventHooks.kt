@@ -1,11 +1,14 @@
 package dev.jansel.feixiao.extensions
 
 import dev.jansel.feixiao.database.collections.StreamerCollection
+import dev.jansel.feixiao.database.entities.StreamerData
 import dev.jansel.feixiao.logger
 import dev.jansel.feixiao.twitchClient
 import dev.kord.core.event.gateway.ReadyEvent
 import dev.kordex.core.extensions.Extension
 import dev.kordex.core.extensions.event
+import org.litote.kmongo.deleteMany
+import org.litote.kmongo.eq
 
 class EventHooks : Extension() {
 	override val name = "eventhooks"
@@ -15,10 +18,15 @@ class EventHooks : Extension() {
 			action {
 				logger.info { "Bot is ready!" }
 				kord.editPresence { listening("the database") }
-				// check every entry in the database and enable the stream event listener
+				// check every entry in the database and enable the stream event listener if a server is listening to the streamer
 				StreamerCollection().collection.find().toList().forEach {
-					twitchClient!!.clientHelper.enableStreamEventListener(it.name)
-					logger.info { "Enabled stream event listener for ${it.name}" }
+					if (it.servers.isNotEmpty()) {
+						twitchClient!!.clientHelper.enableStreamEventListener(it.name)
+						logger.info { "Enabled stream event listener for ${it.name}" }
+					} else {
+						logger.info { "No servers are listening to ${it.name}, deleting from the database..." }
+						StreamerCollection().collection.deleteMany(StreamerData::name eq it.name)
+					}
 				}
 			}
 		}

@@ -41,9 +41,6 @@ class StreamerCollection : KordExKoinComponent {
 				StreamerData::name eq streamerName,
 				setValue(StreamerData::servers, coll.servers - Server(guildId, channelId, roleId))
 			)
-			if (coll.servers.isEmpty()) {
-				collection.deleteOne(StreamerData::name eq streamerName)
-			}
 		}
 	}
 }
