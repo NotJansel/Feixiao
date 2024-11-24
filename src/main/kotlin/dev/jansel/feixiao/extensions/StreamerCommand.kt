@@ -9,6 +9,7 @@ import dev.kordex.core.commands.Arguments
 import dev.kordex.core.commands.application.slash.publicSubCommand
 import dev.kordex.core.commands.converters.impl.channel
 import dev.kordex.core.commands.converters.impl.optionalRole
+import dev.kordex.core.commands.converters.impl.optionalString
 import dev.kordex.core.commands.converters.impl.string
 import dev.kordex.core.extensions.Extension
 import dev.kordex.core.extensions.publicSlashCommand
@@ -70,7 +71,7 @@ class StreamerCommand : Extension() {
 			name = "role"
 			description = "Role to ping when the streamer goes live"
 		}
-		val message by string {
+		val message by optionalString {
 			name = "message"
 			description = "Message to send when the streamer goes live. Possible placeholders (put in curly braces!!): url, name, title, category, role (if set)"
 		}
