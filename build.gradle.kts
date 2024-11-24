@@ -20,6 +20,7 @@ dependencies {
 	implementation(libs.kx.ser)
 	implementation(libs.kx.coroutines)
 	implementation(libs.twitch4j)
+	implementation(libs.events4j)
 	implementation(libs.kmongo)
 
 	// Logging dependencies

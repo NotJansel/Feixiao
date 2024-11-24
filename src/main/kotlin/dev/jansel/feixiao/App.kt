@@ -3,6 +3,7 @@
  */
 package dev.jansel.feixiao
 
+import com.github.philippheuer.events4j.reactor.ReactorEventHandler
 import com.github.twitch4j.TwitchClient
 import com.github.twitch4j.TwitchClientBuilder
 import com.github.twitch4j.events.ChannelGoLiveEvent
@@ -31,6 +32,7 @@ suspend fun main() {
 		.withEnableHelix(true)
 		.withClientId(twitchcid)
 		.withClientSecret(twitchcs)
+		.withDefaultEventHandler(ReactorEventHandler::class.java)
 		.build()
 
 	twitchClient!!.eventManager.onEvent(ChannelGoLiveEvent::class.java) {

@@ -22,5 +22,5 @@ logback = { module = "ch.qos.logback:logback-classic", version.ref = "logback" }
 logback-groovy = { module = "io.github.virtualdogbert:logback-groovy-config", version.ref = "logback-groovy" }
 logging = { module = "io.github.oshai:kotlin-logging", version.ref = "logging" }
 twitch4j = { module = "com.github.twitch4j:twitch4j", version.ref = "twitch4j" }
-events4j = { module = "com.github.philippheuer.events4j:events4j-handler-simple", version.ref = "events4j" }
+events4j = { module = "com.github.philippheuer.events4j:events4j-handler-reactor", version.ref = "events4j" }
 kmongo = { module="org.litote.kmongo:kmongo-coroutine-serialization", version.ref = "kmongo"}
