@@ -4,6 +4,10 @@ import dev.jansel.feixiao.database.collections.StreamerCollection
 import dev.jansel.feixiao.database.entities.StreamerData
 import dev.jansel.feixiao.logger
 import dev.jansel.feixiao.twitchClient
+import dev.jansel.feixiao.utils.tchannelid
+import dev.jansel.feixiao.utils.tserverid
+import dev.kord.core.behavior.getChannelOf
+import dev.kord.core.entity.channel.GuildMessageChannel
 import dev.kord.core.event.gateway.ReadyEvent
 import dev.kordex.core.extensions.Extension
 import dev.kordex.core.extensions.event
@@ -17,6 +21,9 @@ class EventHooks : Extension() {
 		event<ReadyEvent> {
 			action {
 				logger.info { "Bot is ready!" }
+				val onlineLog =
+					kord.getGuildOrNull(tserverid)?.getChannelOf<GuildMessageChannel>(tchannelid)
+				onlineLog?.createMessage("Bot Online!")
 				kord.editPresence { listening("the database") }
 				// check every entry in the database and enable the stream event listener if a server is listening to the streamer
 				StreamerCollection().collection.find().toList().forEach {
