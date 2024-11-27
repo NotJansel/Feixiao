@@ -11,7 +11,6 @@ import dev.kord.core.entity.channel.GuildMessageChannel
 import dev.kord.core.event.gateway.ReadyEvent
 import dev.kordex.core.extensions.Extension
 import dev.kordex.core.extensions.event
-import org.litote.kmongo.deleteMany
 import org.litote.kmongo.eq
 
 class EventHooks : Extension() {

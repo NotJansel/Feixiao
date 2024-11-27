@@ -20,7 +20,13 @@ class StreamerCollection : KordExKoinComponent {
 	suspend fun getData(channelName: String): StreamerData? =
 		collection.findOne(StreamerData::name eq channelName)
 
-	suspend fun updateData(guildId: Snowflake, channelId: Snowflake, streamerName: String, roleId: Snowflake?, liveMessage: String?) {
+	suspend fun updateData(
+		guildId: Snowflake,
+		channelId: Snowflake,
+		streamerName: String,
+		roleId: Snowflake?,
+		liveMessage: String?
+	) {
 		val coll = collection.findOne(StreamerData::name eq streamerName)
 		if (coll != null) {
 			collection.updateOne(
@@ -34,7 +40,13 @@ class StreamerCollection : KordExKoinComponent {
 		}
 	}
 
-	suspend fun removeData(guildId: Snowflake, channelId: Snowflake, streamerName: String, roleId: Snowflake?, liveMessage: String?) {
+	suspend fun removeData(
+		guildId: Snowflake,
+		channelId: Snowflake,
+		streamerName: String,
+		roleId: Snowflake?,
+		liveMessage: String?
+	) {
 		val coll = collection.findOne(StreamerData::name eq streamerName)
 		if (coll != null) {
 			collection.updateOne(
