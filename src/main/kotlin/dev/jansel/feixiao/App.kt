@@ -13,6 +13,7 @@ import dev.jansel.feixiao.extensions.StreamerCommand
 import dev.jansel.feixiao.utils.*
 import dev.kord.core.entity.channel.GuildMessageChannel
 import dev.kordex.core.ExtensibleBot
+import dev.kordex.core.i18n.SupportedLocales
 import io.github.oshai.kotlinlogging.KotlinLogging
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
@@ -26,6 +27,9 @@ suspend fun main() {
 		extensions {
 			add(::EventHooks)
 			add(::StreamerCommand)
+		}
+		i18n {
+			applicationCommandLocale(SupportedLocales.ENGLISH, SupportedLocales.GERMAN)
 		}
 	}
 	twitchClient = TwitchClientBuilder.builder()

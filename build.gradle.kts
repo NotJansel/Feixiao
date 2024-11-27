@@ -32,8 +32,7 @@ dependencies {
 }
 
 kordEx {
-	kordExVersion = "2.2.1-SNAPSHOT"
-	kordVersion = "0.16.0-SNAPSHOT"
+	kordExVersion = "2.3.1-SNAPSHOT"
 	jvmTarget = 21
 
 	bot {
@@ -41,6 +40,11 @@ kordEx {
 		dataCollection(DataCollection.None)
 
 		mainClass = "dev.jansel.feixiao.AppKt"
+	}
+
+	i18n {
+		classPackage = "dev.jansel.feixiao.i18n"
+		translationBundle = "feixiao.strings"
 	}
 }
 
@@ -85,6 +89,6 @@ docker {
 }
 
 tasks.wrapper {
-	gradleVersion = "8.10.2"
+	gradleVersion = "8.11.1"
 	distributionType = Wrapper.DistributionType.BIN
 }
