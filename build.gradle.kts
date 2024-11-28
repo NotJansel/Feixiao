@@ -20,6 +20,7 @@ dependencies {
 	implementation(libs.kx.ser)
 	implementation(libs.kx.coroutines)
 	implementation(libs.twitch4j)
+	implementation(libs.events4j)
 	implementation(libs.kmongo)
 
 	// Logging dependencies
@@ -31,15 +32,19 @@ dependencies {
 }
 
 kordEx {
-	kordExVersion = "2.2.1-SNAPSHOT"
-
+	kordExVersion = "2.3.1-SNAPSHOT"
 	jvmTarget = 21
 
 	bot {
 		// See https://docs.kordex.dev/data-collection.html
-		dataCollection(DataCollection.Standard)
+		dataCollection(DataCollection.None)
 
 		mainClass = "dev.jansel.feixiao.AppKt"
+	}
+
+	i18n {
+		classPackage = "dev.jansel.feixiao.i18n"
+		translationBundle = "feixiao.strings"
 	}
 }
 

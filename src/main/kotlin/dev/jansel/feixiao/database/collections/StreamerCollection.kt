@@ -20,26 +20,38 @@ class StreamerCollection : KordExKoinComponent {
 	suspend fun getData(channelName: String): StreamerData? =
 		collection.findOne(StreamerData::name eq channelName)
 
-	suspend fun updateData(guildId: Snowflake, channelId: Snowflake, streamerName: String, roleId: Snowflake?) {
+	suspend fun updateData(
+		guildId: Snowflake,
+		channelId: Snowflake,
+		streamerName: String,
+		roleId: Snowflake?,
+		liveMessage: String?
+	) {
 		val coll = collection.findOne(StreamerData::name eq streamerName)
 		if (coll != null) {
 			collection.updateOne(
 				StreamerData::name eq streamerName,
-				setValue(StreamerData::servers, coll.servers + listOf(Server(guildId, channelId, roleId)))
+				setValue(StreamerData::servers, coll.servers + listOf(Server(guildId, channelId, roleId, liveMessage)))
 			)
 		} else {
 			collection.insertOne(
-				StreamerData(streamerName, listOf(Server(guildId, channelId, roleId)))
+				StreamerData(streamerName, listOf(Server(guildId, channelId, roleId, liveMessage)))
 			)
 		}
 	}
 
-	suspend fun removeData(guildId: Snowflake, channelId: Snowflake, streamerName: String, roleId: Snowflake?) {
+	suspend fun removeData(
+		guildId: Snowflake,
+		channelId: Snowflake,
+		streamerName: String,
+		roleId: Snowflake?,
+		liveMessage: String?
+	) {
 		val coll = collection.findOne(StreamerData::name eq streamerName)
 		if (coll != null) {
 			collection.updateOne(
 				StreamerData::name eq streamerName,
-				setValue(StreamerData::servers, coll.servers - Server(guildId, channelId, roleId))
+				setValue(StreamerData::servers, coll.servers - Server(guildId, channelId, roleId, liveMessage))
 			)
 		}
 	}
