@@ -1,5 +1,6 @@
 package dev.jansel.feixiao.utils
 
+import com.github.philippheuer.events4j.reactor.ReactorEventHandler
 import com.github.twitch4j.TwitchClientBuilder
 import com.github.twitch4j.events.ChannelGoLiveEvent
 import dev.jansel.feixiao.botRef
@@ -14,6 +15,7 @@ class Twitch : KordExKoinComponent {
 	suspend fun init() {
 		twitchClient = TwitchClientBuilder.builder()
 			.withEnableHelix(true)
+			.withDefaultEventHandler(ReactorEventHandler::class.java)
 			.withClientId(twitchcid)
 			.withClientSecret(twitchcs)
 			.build()
