@@ -89,6 +89,6 @@ docker {
 }
 
 tasks.wrapper {
-	gradleVersion = "8.11.1"
+	gradleVersion = "8.10.2"
 	distributionType = Wrapper.DistributionType.BIN
 }
