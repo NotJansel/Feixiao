@@ -4,5 +4,12 @@
 		"config:recommended"
 	],
 	"commitBody": "[skip ci]",
-	"baseBranches": ["refactor/depUpdates"]
+	"baseBranches": ["refactor/depUpdates"],
+	"prHourlyLimit": 0,
+	"packageRules": [
+   		{
+      		"matchUpdateTypes": ["patch", "pin", "digest"],
+      		"automerge": true
+    	}
+  ]
 }
