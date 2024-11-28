@@ -25,12 +25,37 @@ class Twitch : KordExKoinComponent {
 			runBlocking {
 				launch {
 					val streamer = StreamerCollection().getData(it.channel.name)
-					val channel = botRef!!.kordRef.getChannelOf<GuildMessageChannel>(streamer!!.servers.first().channelId)
-					val role = streamer.servers.first().roleId
-					if (role != null) {
-						channel?.createMessage("<@&$role> https://twitch.tv/${it.channel.name} went live streaming ${it.stream.gameName}: ${it.stream.title}")
-					} else {
-						channel?.createMessage("${it.channel.name} went live: ${it.stream.title}")
+					for (server in streamer!!.servers) {
+						val channel = botRef!!.kordRef.getChannelOf<GuildMessageChannel>(server.channelId)
+						val role = server.roleId
+						val livemessage = server.liveMessage
+
+						if (role != null) {
+							if (livemessage != null) {
+								channel?.createMessage(
+									livemessage
+										.replace("{name}", it.channel.name)
+										.replace("{category}", it.stream.gameName)
+										.replace("{title}", it.stream.title)
+										.replace("{url}", "https://twitch.tv/${it.channel.name}")
+										.replace("{role}", "<@&$role>")
+								)
+							} else {
+								channel?.createMessage("<@&$role> https://twitch.tv/${it.channel.name} went live streaming ${it.stream.gameName}: ${it.stream.title}")
+							}
+						} else {
+							if (livemessage != null) {
+								channel?.createMessage(
+									livemessage
+										.replace("{name}", it.channel.name)
+										.replace("{category}", it.stream.gameName)
+										.replace("{title}", it.stream.title)
+										.replace("{url}", "https://twitch.tv/${it.channel.name}")
+								)
+							} else {
+								channel?.createMessage("https://twitch.tv/${it.channel.name} went live streaming ${it.stream.gameName}: ${it.stream.title}")
+							}
+						}
 					}
 				}
 			}
