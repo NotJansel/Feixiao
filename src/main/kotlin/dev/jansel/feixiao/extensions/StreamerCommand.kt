@@ -2,6 +2,7 @@ package dev.jansel.feixiao.extensions
 
 import dev.jansel.feixiao.database.collections.StreamerCollection
 import dev.jansel.feixiao.database.entities.StreamerData
+import dev.jansel.feixiao.extensions.StreamerCommand.UpdateStreamerArgs
 import dev.jansel.feixiao.i18n.Translations
 import dev.jansel.feixiao.twitchClient
 import dev.kord.common.entity.Permission
@@ -10,6 +11,7 @@ import dev.kordex.core.checks.hasPermission
 import dev.kordex.core.commands.Arguments
 import dev.kordex.core.commands.application.slash.publicSubCommand
 import dev.kordex.core.commands.converters.impl.channel
+import dev.kordex.core.commands.converters.impl.optionalChannel
 import dev.kordex.core.commands.converters.impl.optionalRole
 import dev.kordex.core.commands.converters.impl.optionalString
 import dev.kordex.core.commands.converters.impl.string
@@ -33,7 +35,15 @@ class StreamerCommand : Extension() {
 				}
 				action {
 					val streamer = arguments.streamer
-					StreamerCollection().updateData(
+					StreamerCollection().getData(streamer)?.servers?.forEach {
+						if (it.guildId == guild!!.id) {
+							respond {
+								content = "Streamer already exists in this server"
+							}
+							return@action
+						}
+					}
+					StreamerCollection().addData(
 						guild!!.id,
 						arguments.channel.id,
 						streamer,
@@ -61,6 +71,49 @@ class StreamerCommand : Extension() {
 					}
 					respond {
 						content = "Removed streamer $streamer"
+					}
+				}
+			}
+
+			publicSubCommand(::UpdateStreamerArgs) {
+				name = Translations.Streamer.Command.Update.name
+				description = Translations.Streamer.Command.Update.description
+				check {
+					anyGuild()
+					hasPermission(Permission.ManageGuild)
+				}
+				action {
+					val streamer = arguments.streamer
+					val data = StreamerCollection().collection.findOne(StreamerData::name eq streamer)
+					if (data != null) {
+						val servers = data.servers
+						val guildId = guild!!.id
+						val roleId = arguments.role
+						val channelId = arguments.channel
+						val message = arguments.message
+						val temp = servers.find { it.guildId == guildId }
+						if (temp != null) {
+							if (channelId != null) {
+								StreamerCollection().updateData(streamer, channelId.id, guildId)
+							}
+							if (roleId != null) {
+								StreamerCollection().updateData(streamer, roleId.id, guildId, false)
+							}
+							if (message != null) {
+								StreamerCollection().updateData(streamer, message, guildId)
+							}
+							respond {
+								content = "Updated streamer $streamer"
+							}
+						} else {
+							respond {
+								content = "No server associated with the guildId"
+							}
+						}
+					} else {
+						respond {
+							content = "No StreamerData associated with the streamerName"
+						}
 					}
 				}
 			}
@@ -93,6 +146,25 @@ class StreamerCommand : Extension() {
 			name = Translations.Streamer.Command.Arguments.Remove.name
 			description = Translations.Streamer.Command.Arguments.Remove.description
 			require(true)
+		}
+	}
+
+	inner class UpdateStreamerArgs : Arguments() {
+		val streamer by string {
+			name = Translations.Streamer.Command.Arguments.Update.Streamer.name
+			description = Translations.Streamer.Command.Arguments.Update.Streamer.description
+		}
+		val channel by optionalChannel {
+			name = Translations.Streamer.Command.Arguments.Update.Channel.name
+			description = Translations.Streamer.Command.Arguments.Update.Channel.description
+		}
+		val role by optionalRole {
+			name = Translations.Streamer.Command.Arguments.Update.Role.name
+			description = Translations.Streamer.Command.Arguments.Update.Role.description
+		}
+		val message by optionalString {
+			name = Translations.Streamer.Command.Arguments.Update.Message.name
+			description = Translations.Streamer.Command.Arguments.Update.Message.description
 		}
 	}
 }
