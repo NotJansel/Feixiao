@@ -1,6 +1,7 @@
 package dev.jansel.feixiao.extensions
 
 import dev.jansel.feixiao.database.collections.StreamerCollection
+import dev.jansel.feixiao.database.entities.StreamerData
 import dev.jansel.feixiao.i18n.Translations
 import dev.jansel.feixiao.twitchClient
 import dev.kord.common.entity.Permission
@@ -14,6 +15,7 @@ import dev.kordex.core.commands.converters.impl.optionalString
 import dev.kordex.core.commands.converters.impl.string
 import dev.kordex.core.extensions.Extension
 import dev.kordex.core.extensions.publicSlashCommand
+import org.litote.kmongo.eq
 
 class StreamerCommand : Extension() {
 	override val name = "streaming"
@@ -54,7 +56,9 @@ class StreamerCommand : Extension() {
 				}
 				action {
 					val streamer = arguments.streamer
-					StreamerCollection().removeData(guild!!.id, channel.id, streamer, null, null)
+					StreamerCollection().collection.findOne(StreamerData::name eq streamer)?.servers?.forEach {
+						StreamerCollection().removeData(it.guildId, it.channelId, streamer, it.roleId, it.liveMessage)
+					}
 					respond {
 						content = "Removed streamer $streamer"
 					}
