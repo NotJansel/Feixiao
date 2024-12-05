@@ -6,7 +6,6 @@ import dev.jansel.feixiao.database.entities.StreamerData
 import dev.kord.common.entity.Snowflake
 import dev.kordex.core.koin.KordExKoinComponent
 import org.koin.core.component.inject
-import org.litote.kmongo.elemMatch
 import org.litote.kmongo.eq
 import org.litote.kmongo.setValue
 
@@ -54,7 +53,7 @@ class StreamerCollection : KordExKoinComponent {
 		streamerName: String,
 		roleId: Snowflake,
 		guildId: Snowflake,
-		noOverload : Boolean = false // this is needed to avoid a conflict with the other updateData function
+		noOverload: Boolean = false // this is needed to avoid a conflict with the other updateData function
 	): Int {
 		val coll = collection.findOne(StreamerData::name eq streamerName)
 		if (coll != null) {
@@ -62,7 +61,10 @@ class StreamerCollection : KordExKoinComponent {
 			if (temp == null) return 1
 			collection.updateMany(
 				StreamerData::name eq streamerName,
-				setValue(StreamerData::servers, coll.servers - temp + Server(guildId, temp.channelId, roleId, temp.liveMessage))
+				setValue(
+					StreamerData::servers,
+					coll.servers - temp + Server(guildId, temp.channelId, roleId, temp.liveMessage)
+				)
 			)
 			return 0
 		}
@@ -87,7 +89,10 @@ class StreamerCollection : KordExKoinComponent {
 			if (temp == null) return 1
 			collection.updateMany(
 				StreamerData::name eq streamerName,
-				setValue(StreamerData::servers, coll.servers - temp + Server(guildId, temp.channelId, temp.roleId, liveMessage))
+				setValue(
+					StreamerData::servers,
+					coll.servers - temp + Server(guildId, temp.channelId, temp.roleId, liveMessage)
+				)
 			)
 			return 0
 		}
@@ -112,7 +117,10 @@ class StreamerCollection : KordExKoinComponent {
 			if (temp == null) return 1
 			collection.updateMany(
 				StreamerData::name eq streamerName,
-				setValue(StreamerData::servers, coll.servers - temp + Server(guildId, channelId, temp.roleId, temp.liveMessage))
+				setValue(
+					StreamerData::servers,
+					coll.servers - temp + Server(guildId, channelId, temp.roleId, temp.liveMessage)
+				)
 			)
 			return 0
 		}
