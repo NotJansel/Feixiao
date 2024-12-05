@@ -11,5 +11,6 @@
       		"matchUpdateTypes": ["patch", "pin", "digest"],
       		"automerge": true
     	}
-  ]
+    ],
+	"assignees": ["NotJansel"]
 }
