@@ -38,6 +38,12 @@ class StreamerCommand : Extension() {
 							return@action
 						}
 					}
+					if (arguments.role?.id == guild!!.id) {
+						respond {
+							content = "This action would implement a everyone ping. to properly use it please make a ping without role and insert the everyone ping manually."
+						}
+						return@action
+					}
 					StreamerCollection().addData(
 						guild!!.id,
 						arguments.channel.id,
@@ -87,6 +93,12 @@ class StreamerCommand : Extension() {
 						val channelId = arguments.channel
 						val message = arguments.message
 						val temp = servers.find { it.guildId == guildId }
+						if (roleId?.id== guildId) {
+							respond {
+								content = "This action would implement a everyone ping. to properly use it please make a ping without role and insert the everyone ping manually."
+							}
+							return@action
+						}
 						if (temp != null) {
 							if (channelId != null) {
 								StreamerCollection().updateData(streamer, channelId.id, guildId)
