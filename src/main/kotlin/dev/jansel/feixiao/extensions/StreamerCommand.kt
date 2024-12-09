@@ -40,7 +40,7 @@ class StreamerCommand : Extension() {
 					}
 					if (arguments.role?.id == guild!!.id) {
 						respond {
-							content = "This action would implement a everyone ping. to properly use it please make a ping without role and insert the everyone ping manually."
+							content = "This action would implement a everyone ping, which is due to how role pings are implemented right now not possible. If you want to make an everyone ping regardless, make a role-less ping and write the everyone ping manually."
 						}
 						return@action
 					}
@@ -95,7 +95,7 @@ class StreamerCommand : Extension() {
 						val temp = servers.find { it.guildId == guildId }
 						if (roleId?.id== guildId) {
 							respond {
-								content = "This action would implement a everyone ping. to properly use it please make a ping without role and insert the everyone ping manually."
+								content = "This action would implement a everyone ping, which is due to how role pings are implemented right now not possible. If you want to make an everyone ping regardless, make a role-less ping and write the everyone ping manually."
 							}
 							return@action
 						}
