@@ -41,10 +41,5 @@ jobs:
           username: ${{ github.repository_owner }}
           password: ${{ secrets.PW }}
 
-      - name: Build and push
-        uses: docker/build-push-action@v6
-        with:
-          context: .
-          platforms: linux/arm64
-          push: true
-          tags: pi5:8125/jansel/feixiao:latest
+      - name: Push to Gitea Registry
+        run: docker buildx build --output type=registry,registry.insecure=true,name=pi5:8125/jansel/feixiao
