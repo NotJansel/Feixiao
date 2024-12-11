@@ -61,5 +61,8 @@ jobs:
           username: ${{ github.repository_owner }}
           password: ${{ secrets.PW }}
 
-      - name: Push to Gitea Registry
-        run: docker build pi5:8125/jansel/feixiao .
+      - name: Build the Docker image
+        run: docker build -t pi5:8125/jansel/feixiao .
+        
+      - name: Push the Docker image
+        run: docker push pi5:8125/jansel/feixiao
