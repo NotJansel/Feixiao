@@ -47,4 +47,4 @@ jobs:
           context: .
           platforms: linux/arm64
           push: true
-          tags: jansel/feixiao:latest
+          tags: pi5:8125/jansel/feixiao:latest
