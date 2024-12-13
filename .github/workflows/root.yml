@@ -63,4 +63,4 @@ jobs:
         run: docker build -t pi5:8125/jansel/feixiao:latest -t pi5:8125/jansel/feixiao:${{ gitea.run_number }} .
         
       - name: Push the Docker image
-        run: docker push pi5:8125/jansel/feixiao
+        run: docker push -a pi5:8125/jansel/feixiao
