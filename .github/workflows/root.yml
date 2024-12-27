@@ -4,6 +4,8 @@ on:
   push:
     branches:
       - root
+  schedule:
+  - cron: "0 0 * * *"
 
 jobs:
   build:
@@ -23,6 +25,10 @@ jobs:
         with:
           java-version: 21
           distribution: temurin
+
+      - name: Get current date
+        id: date
+        run: echo "::set-output name=date::$(date +'%Y-%m-%d')"
 
       - name: Gradle Cache
         uses: actions/cache/restore@v4
@@ -57,10 +63,10 @@ jobs:
           password: ${{ secrets.PW }}
 
       - name: Build the Docker image
-        run: docker build -t pi5:8125/jansel/feixiao:latest -t pi5:8125/jansel/feixiao:${{ gitea.run_number }} .
+        run: docker build -t pi5:8125/jansel/feixiao:latest -t pi5:8125/jansel/feixiao:${{ steps.date.outputs.date }} .
         
       - name: Push the Docker image related to this workflow
-        run: docker push pi5:8125/jansel/feixiao:${{ gitea.run_number }}
+        run: docker push pi5:8125/jansel/feixiao:${{ steps.date.outputs.date }}
         
       - name: Push the latest Docker image
         run: docker push pi5:8125/jansel/feixiao:latest
