@@ -10,7 +10,10 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
-    steps:        
+    steps:
+      - name: Disable SSL verify (Temporary Fix)
+        run: git config --global http.sslVerify false
+        
       - uses: actions/checkout@v4
 
       - name: Set up QEMU
