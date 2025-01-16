@@ -1,5 +1,5 @@
 name: Build & Publish
-
+run-name: Feixiao weekly deploy
 on:
   push:
     branches:
