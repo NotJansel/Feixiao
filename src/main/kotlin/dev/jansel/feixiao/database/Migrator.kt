@@ -1,9 +1,14 @@
 package dev.jansel.feixiao.database
 
+import com.github.philippheuer.events4j.reactor.ReactorEventHandler
+import com.github.twitch4j.TwitchClientBuilder
 import dev.jansel.feixiao.database.collections.MetaCollection
 import dev.jansel.feixiao.database.entities.MetaData
 import dev.jansel.feixiao.database.migrations.v1
 import dev.jansel.feixiao.database.migrations.v2
+import dev.jansel.feixiao.twitchClient
+import dev.jansel.feixiao.utils.twitchcid
+import dev.jansel.feixiao.utils.twitchcs
 import dev.kordex.core.koin.KordExKoinComponent
 import io.github.oshai.kotlinlogging.KotlinLogging
 import org.koin.core.component.inject
@@ -16,6 +21,13 @@ object Migrator : KordExKoinComponent {
 
 	suspend fun migrate() {
 		logger.info { "Starting main database migration" }
+		logger.info { "Initializing Twitch client just in case" }
+		twitchClient = TwitchClientBuilder.builder()
+			.withEnableHelix(true)
+			.withDefaultEventHandler(ReactorEventHandler::class.java)
+			.withClientId(twitchcid)
+			.withClientSecret(twitchcs)
+			.build()
 
 		var meta = mainMetaCollection.get()
 
