@@ -3,6 +3,7 @@ package dev.jansel.feixiao.database
 import dev.jansel.feixiao.database.collections.MetaCollection
 import dev.jansel.feixiao.database.entities.MetaData
 import dev.jansel.feixiao.database.migrations.v1
+import dev.jansel.feixiao.database.migrations.v2
 import dev.kordex.core.koin.KordExKoinComponent
 import io.github.oshai.kotlinlogging.KotlinLogging
 import org.koin.core.component.inject
@@ -35,6 +36,7 @@ object Migrator : KordExKoinComponent {
 			try {
 				when (nextVersion) {
 					1 -> ::v1
+					2 -> ::v2
 					else -> break
 				}(db.mongo)
 

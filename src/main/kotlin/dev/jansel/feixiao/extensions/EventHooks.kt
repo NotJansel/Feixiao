@@ -4,6 +4,8 @@ import dev.jansel.feixiao.database.collections.StreamerCollection
 import dev.jansel.feixiao.database.entities.StreamerData
 import dev.jansel.feixiao.logger
 import dev.jansel.feixiao.twitchClient
+import dev.jansel.feixiao.utils.getTwitchIdByName
+import dev.jansel.feixiao.utils.getTwitchNameById
 import dev.jansel.feixiao.utils.tchannelid
 import dev.jansel.feixiao.utils.tserverid
 import dev.kord.core.behavior.getChannelOf
@@ -12,6 +14,7 @@ import dev.kord.core.event.gateway.ReadyEvent
 import dev.kordex.core.extensions.Extension
 import dev.kordex.core.extensions.event
 import org.litote.kmongo.eq
+import org.litote.kmongo.setValue
 
 class EventHooks : Extension() {
 	override val name = "eventhooks"
@@ -27,8 +30,10 @@ class EventHooks : Extension() {
 				// check every entry in the database and enable the stream event listener if a server is listening to the streamer
 				StreamerCollection().collection.find().toList().forEach {
 					if (it.servers.isNotEmpty()) {
-						twitchClient!!.clientHelper.enableStreamEventListener(it.name)
-						logger.info { "Enabled stream event listener for ${it.name}" }
+						val currentName = getTwitchNameById(it.id!!)
+						twitchClient!!.clientHelper.enableStreamEventListener(currentName)
+						logger.info { "Enabled stream event listener for $currentName" }
+						StreamerCollection().collection.updateOne(StreamerData::name eq it.name, setValue(StreamerData::name, currentName))
 					} else {
 						logger.info { "No servers are listening to ${it.name}, deleting from the database..." }
 						StreamerCollection().collection.deleteMany(StreamerData::name eq it.name)

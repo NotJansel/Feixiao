@@ -6,6 +6,7 @@ import kotlinx.serialization.Serializable
 @Serializable
 data class StreamerData(
 	val name: String,
+	val id: String?,
 	val servers: List<Server>
 )
 

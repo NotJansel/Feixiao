@@ -3,6 +3,7 @@ package dev.jansel.feixiao.database.collections
 import dev.jansel.feixiao.database.Database
 import dev.jansel.feixiao.database.entities.Server
 import dev.jansel.feixiao.database.entities.StreamerData
+import dev.jansel.feixiao.utils.getTwitchIdByName
 import dev.kord.common.entity.Snowflake
 import dev.kordex.core.koin.KordExKoinComponent
 import org.koin.core.component.inject
@@ -35,7 +36,7 @@ class StreamerCollection : KordExKoinComponent {
 			)
 		} else {
 			collection.insertOne(
-				StreamerData(streamerName, listOf(Server(guildId, channelId, roleId, liveMessage)))
+				StreamerData(streamerName, getTwitchIdByName(streamerName), listOf(Server(guildId, channelId, roleId, liveMessage)))
 			)
 		}
 	}

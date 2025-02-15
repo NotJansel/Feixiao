@@ -3,6 +3,7 @@ package dev.jansel.feixiao.utils
 import dev.jansel.feixiao.database.Database
 import dev.jansel.feixiao.database.collections.MetaCollection
 import dev.jansel.feixiao.database.collections.StreamerCollection
+import dev.jansel.feixiao.twitchClient
 import dev.kord.common.entity.Snowflake
 import dev.kordex.core.builders.ExtensibleBotBuilder
 import dev.kordex.core.utils.env
@@ -51,4 +52,24 @@ suspend inline fun ExtensibleBotBuilder.twitch(active: Boolean) {
 		}
 	}
 
+}
+
+fun getTwitchNameById(id: String): String? {
+	val resultList = twitchClient!!.helix?.getUsers(null, listOf(id), null)?.execute()
+	resultList?.users?.forEach { user ->
+		if (user.id == id) {
+			return user.displayName
+		}
+	}
+	return null
+}
+
+fun getTwitchIdByName(name: String): String? {
+	val resultList = twitchClient!!.helix?.getUsers(null, null, listOf(name))?.execute()
+	resultList?.users?.forEach { user ->
+		if (user.displayName == name) {
+			return user.id
+		}
+	}
+	return null
 }
