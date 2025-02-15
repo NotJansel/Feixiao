@@ -43,21 +43,21 @@ jobs:
         uses: docker/login-action@v3
 
         with:
-          registry: pi5:8125
-          username: ${{ github.repository_owner }}
-          password: ${{ secrets.PW }}
+          registry: registry.digitalocean.com
+          username: ${{ secrets.DOMAIL }}
+          password: ${{ secrets.DOKEY }}
 
       - name: Build the Docker image
-        run: docker build -t pi5:8125/jansel/feixiao:latest -t pi5:8125/jansel/feixiao:${{ steps.date.outputs.date }} .
+        run: docker build -t registry.digitalocean.com/jansel/feixiao:latest -t registry.digitalocean.com/jansel/feixiao:${{ steps.date.outputs.date }} .
 
       - name: Push the Docker image related to this workflow
-        run: docker push pi5:8125/jansel/feixiao:${{ steps.date.outputs.date }}
+        run: docker push registry.digitalocean.com/jansel/feixiao:${{ steps.date.outputs.date }}
 
       - name: Push the latest Docker image
-        run: docker push pi5:8125/jansel/feixiao:latest
+        run: docker push registry.digitalocean.com/jansel/feixiao:latest
 
       - name: Remove the Docker image
-        run: docker rmi pi5:8125/jansel/feixiao:${{ steps.date.outputs.date }}
+        run: docker rmi registry.digitalocean.com/jansel/feixiao:${{ steps.date.outputs.date }}
 
       - name: Force remove the latest Docker image
-        run: docker rmi pi5:8125/jansel/feixiao:latest --force
+        run: docker rmi registry.digitalocean.com/jansel/feixiao:latest --force
