@@ -39,7 +39,7 @@ jobs:
       - name: Gradle (Build)
         run: "./gradlew build"
 
-      - name: Login to Gitea Registry
+      - name: Login to DigitalOcean Registry
         uses: docker/login-action@v3
 
         with:
