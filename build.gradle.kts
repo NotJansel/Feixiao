@@ -82,7 +82,7 @@ docker {
 		emptyLine()
 
 		entryPointExec(
-			"java", "-Xms2G", "-Xmx2G",
+			"java", "-Xmx2G",
 			"-jar", "/bot/bot.jar"
 		)
 	}
