@@ -1,17 +1,21 @@
 name: Build & Publish
+
 on:
+  workflow_dispatch:
   push:
-    branches:
-      - root
 
 jobs:
   build:
     runs-on: ubuntu-latest
-    steps:
-      - name: Disable SSL verify (Temporary Fix)
-        run: git config --global http.sslVerify false
 
+    steps:
       - uses: actions/checkout@v4
+      
+      - name: Set up QEMU
+        uses: docker/setup-qemu-action@v3
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
 
       - name: Set up Java
         uses: actions/setup-java@v4
@@ -20,12 +24,16 @@ jobs:
           java-version: 21
           distribution: temurin
 
+      - name: Gradle (Setup)
+        uses: gradle/actions/setup-gradle@v4
+
+        with:
+          dependency-graph: generate-and-submit
+          cache-disabled: true
+
       - name: Get current date
         id: date
         run: echo "::set-output name=date::$(date +'%Y-%m-%d')"
-
-      - name: Grant execute permission for gradlew
-        run: chmod +x gradlew
 
       - name: Gradle (Build)
         run: "./gradlew build"
@@ -38,17 +46,10 @@ jobs:
           username: ${{ secrets.DOMAIL }}
           password: ${{ secrets.DOKEY }}
 
-      - name: Build the Docker image
-        run: docker build -t registry.digitalocean.com/jansel/feixiao:latest -t registry.digitalocean.com/jansel/feixiao:${{ steps.date.outputs.date }} .
-
-      - name: Push the Docker image related to this workflow
-        run: docker push registry.digitalocean.com/jansel/feixiao:${{ steps.date.outputs.date }}
-
-      - name: Push the latest Docker image
-        run: docker push registry.digitalocean.com/jansel/feixiao:latest
-
-      - name: Remove the Docker image
-        run: docker rmi registry.digitalocean.com/jansel/feixiao:${{ steps.date.outputs.date }}
-
-      - name: Force remove the latest Docker image
-        run: docker rmi registry.digitalocean.com/jansel/feixiao:latest --force
+      - name: Build and push
+        uses: docker/build-push-action@v5
+        with:
+          context: .
+          platforms: linux/amd64,linux/arm64
+          push: true
+          tags: registry.digitalocean.com/jansel/feixiao:latest,registry.digitalocean.com/jansel/feixiao:${{ steps.date.outputs.date }}
