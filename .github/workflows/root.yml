@@ -3,6 +3,8 @@ name: Build & Publish
 on:
   workflow_dispatch:
   push:
+    branches:
+      - root
 
 jobs:
   build:
