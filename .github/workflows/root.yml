@@ -49,7 +49,7 @@ jobs:
           password: ${{ secrets.DOKEY }}
 
       - name: Build and push
-        uses: https://github.com/docker/build-push-action@v5
+        uses: https://github.com/docker/build-push-action@v6
         with:
           context: .
           platforms: linux/amd64,linux/arm64
