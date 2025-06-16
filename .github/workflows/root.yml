@@ -12,7 +12,7 @@ jobs:
 
     steps:
       - uses: https://github.com/actions/checkout@v4
-      
+
       - name: Set up QEMU
         uses: https://github.com/docker/setup-qemu-action@v3
 
@@ -25,6 +25,14 @@ jobs:
         with:
           java-version: 21
           distribution: temurin
+
+      - name: "Restore Cache"
+        id: restore-cache
+        uses: https://data.forgejo.org/actions/cache/restore@v4
+
+        with:
+          path: "~/.gradle/caches,~/.gradle/wrapper,~/.m2/repository"
+          key: gradle-store
 
       - name: Grant execute permission for gradlew
         run: chmod +x gradlew
@@ -55,3 +63,10 @@ jobs:
           platforms: linux/amd64,linux/arm64
           push: true
           tags: registry.digitalocean.com/jansel/feixiao:latest,registry.digitalocean.com/jansel/feixiao:${{ steps.date.outputs.date }}
+
+      - name: "Save Cache"
+        uses: https://data.forgejo.org/actions/cache/save@v4
+
+        with:
+          path: ~/.gradle/caches,~/.gradle/wrapper,~/.m2/repository
+          key: ${{ steps.restore-cache.outputs.cache-primary-key }}
