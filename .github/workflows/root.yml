@@ -33,7 +33,10 @@ jobs:
         uses: https://data.forgejo.org/actions/cache/restore@v4
 
         with:
-          path: "~/.gradle/caches,~/.gradle/wrapper,~/.m2/repository"
+          path: |
+            ~/.gradle/caches
+            ~/.gradle/wrapper
+            ~/.m2/repository
           key: gradle-store
 
       - name: Grant execute permission for gradlew
@@ -70,5 +73,8 @@ jobs:
         uses: https://data.forgejo.org/actions/cache/save@v4
 
         with:
-          path: ~/.gradle/caches,~/.gradle/wrapper,~/.m2/repository
+          path: |
+            ~/.gradle/caches
+            ~/.gradle/wrapper
+            ~/.m2/repository
           key: ${{ steps.restore-cache.outputs.cache-primary-key }}
