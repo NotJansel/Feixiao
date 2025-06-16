@@ -1,5 +1,5 @@
 [versions]
-kotlin = "2.1.0"  # Note: Plugin versions must be updated in the settings.gradle.kts too
+kotlin = "2.1.21"  # Note: Plugin versions must be updated in the settings.gradle.kts too
 
 groovy = "3.0.25"
 jansi = "2.4.2"
@@ -11,6 +11,7 @@ twitch4j = "1.25.0"
 events4j = "0.12.2"
 kx-coroutines = "1.10.2"
 kmongo = "5.2.1"
+kordex-gradle = "1.7.1"
 
 [libraries]
 groovy = { module = "org.codehaus.groovy:groovy", version.ref = "groovy" }
@@ -24,3 +25,11 @@ logging = { module = "io.github.oshai:kotlin-logging", version.ref = "logging" }
 twitch4j = { module = "com.github.twitch4j:twitch4j", version.ref = "twitch4j" }
 events4j = { module = "com.github.philippheuer.events4j:events4j-handler-reactor", version.ref = "events4j" }
 kmongo = { module="org.litote.kmongo:kmongo-coroutine-serialization", version.ref = "kmongo" }
+
+
+[plugins]
+kotlin-jvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "kotlin" }
+kotlin-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlin" }
+
+kordex-docker = { id = "dev.kordex.gradle.docker", version.ref = "kordex-gradle" }
+kordex-plugin = { id = "dev.kordex.gradle.kordex", version.ref = "kordex-gradle" }
