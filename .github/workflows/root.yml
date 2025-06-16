@@ -15,6 +15,8 @@ jobs:
 
       - name: Set up QEMU
         uses: https://github.com/docker/setup-qemu-action@v3
+        with:
+          cache-image: false
 
       - name: Set up Docker Buildx
         uses: https://github.com/docker/setup-buildx-action@v3
