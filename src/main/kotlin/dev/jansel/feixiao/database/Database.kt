@@ -1,6 +1,7 @@
 package dev.jansel.feixiao.database
 
 import com.mongodb.ConnectionString
+import com.mongodb.LoggerSettings
 import com.mongodb.MongoClientSettings
 import dev.jansel.feixiao.utils.mongoUri
 import org.bson.UuidRepresentation
