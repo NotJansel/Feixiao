@@ -12,7 +12,7 @@ jobs:
 
     steps:
       - name: Checkout code
-        uses: https://github.com/actions/checkout@v4
+        uses: https://github.com/actions/checkout@v5
 
       - name: Set up QEMU
         uses: https://github.com/docker/setup-qemu-action@v3
