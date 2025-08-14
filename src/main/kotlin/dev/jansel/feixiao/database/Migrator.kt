@@ -21,13 +21,6 @@ object Migrator : KordExKoinComponent {
 
 	suspend fun migrate() {
 		logger.info { "Starting main database migration" }
-		logger.info { "Initializing Twitch client just in case" }
-		twitchClient = TwitchClientBuilder.builder()
-			.withEnableHelix(true)
-			.withDefaultEventHandler(ReactorEventHandler::class.java)
-			.withClientId(twitchcid)
-			.withClientSecret(twitchcs)
-			.build()
 
 		var meta = mainMetaCollection.get()
 
