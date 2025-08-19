@@ -3,6 +3,8 @@ name: Build & Publish (Current Branch)
 on:
   workflow_dispatch:
   push:
+    branches:
+      - 'feature/**'
 
 jobs:
   build:
