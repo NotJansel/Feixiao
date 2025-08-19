@@ -44,6 +44,14 @@ jobs:
         shell: bash
         run: echo "date=$(date +'%Y-%m-%d')" >> "$GITHUB_OUTPUT"
 
+      - name: Compute Docker tag (trim feature/)
+        id: tag
+        shell: bash
+        run: |
+          REF="${GITHUB_REF_NAME}"
+          TAG="${REF#feature/}"
+          echo "image_tag=${TAG}" >> "$GITHUB_OUTPUT"
+
       - name: Gradle (Build)
         run: ./gradlew build
 
@@ -61,7 +69,7 @@ jobs:
           platforms: linux/amd64,linux/arm64
           push: true
           tags: |
-            registry.digitalocean.com/jansel/feixiao:${{ github.ref_name }}
+            registry.digitalocean.com/jansel/feixiao:${{ steps.tag.outputs.image_tag }}
 
       - name: Save Cache
         uses: actions/cache/save@v4
