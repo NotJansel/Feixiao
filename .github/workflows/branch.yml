@@ -2,6 +2,7 @@ name: Build & Publish (Current Branch)
 
 on:
   workflow_dispatch:
+  push:
 
 jobs:
   build:
@@ -61,7 +62,6 @@ jobs:
           push: true
           tags: |
             registry.digitalocean.com/jansel/feixiao:${{ github.ref_name }}
-            registry.digitalocean.com/jansel/feixiao:${{ steps.date.outputs.date }}
 
       - name: Save Cache
         uses: actions/cache/save@v4
