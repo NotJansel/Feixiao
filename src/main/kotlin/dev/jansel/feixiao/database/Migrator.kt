@@ -21,13 +21,6 @@ object Migrator : KordExKoinComponent {
 
 	suspend fun migrate() {
 		logger.info { "Starting main database migration" }
-		logger.info { "Initializing Twitch client just in case" }
-		twitchClient = TwitchClientBuilder.builder()
-			.withEnableHelix(true)
-			.withDefaultEventHandler(ReactorEventHandler::class.java)
-			.withClientId(twitchcid)
-			.withClientSecret(twitchcs)
-			.build()
 
 		var meta = mainMetaCollection.get()
 
@@ -47,10 +40,32 @@ object Migrator : KordExKoinComponent {
 			@Suppress("TooGenericExceptionCaught", "UseIfInsteadOfWhen")
 			try {
 				when (nextVersion) {
-					1 -> ::v1
-					2 -> ::v2
+					1 -> v1(db.mongo)
+					2 -> {
+						var createdForMigration = false
+						if (twitchClient == null) {
+							logger.info { "Initializing Twitch client for migration v2 (Helix required)" }
+							twitchClient = TwitchClientBuilder.builder()
+								.withEnableHelix(true)
+								.withDefaultEventHandler(ReactorEventHandler::class.java)
+								.withClientId(twitchcid)
+								.withClientSecret(twitchcs)
+								.build()
+							createdForMigration = true
+						}
+						v2(db.mongo)
+						if (createdForMigration) {
+							try {
+								twitchClient?.close()
+							} catch (_: Throwable) {
+								// ignore
+							} finally {
+								twitchClient = null
+							}
+						}
+					}
 					else -> break
-				}(db.mongo)
+				}
 
 				logger.info { "Migrated database to version $nextVersion." }
 			} catch (t: Throwable) {

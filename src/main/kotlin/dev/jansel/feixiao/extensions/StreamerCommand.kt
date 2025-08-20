@@ -14,6 +14,9 @@ import dev.kordex.core.extensions.Extension
 import dev.kordex.core.extensions.publicSlashCommand
 import org.litote.kmongo.eq
 
+/**
+ * Commands to add, update, and remove streamer subscriptions per guild.
+ */
 class StreamerCommand : Extension() {
 	override val name = "streaming"
 	override suspend fun setup() {
@@ -30,31 +33,32 @@ class StreamerCommand : Extension() {
 				}
 				action {
 					val streamer = arguments.streamer
+					val guildId = guild?.id ?: run {
+						respond { content = "Guild context missing" }
+						return@action
+					}
 					StreamerCollection().getData(streamer)?.servers?.forEach {
-						if (it.guildId == guild!!.id) {
-							respond {
-								content = "Streamer already exists in this server"
-							}
+						if (it.guildId == guildId) {
+							respond { content = "Streamer already exists in this server" }
 							return@action
 						}
 					}
-					if (arguments.role?.id == guild!!.id) {
+					if (arguments.role?.id == guildId) {
 						respond {
 							content = "This action would implement a everyone ping, which is due to how role pings are implemented right now not possible. If you want to make an everyone ping regardless, make a role-less ping and write the everyone ping manually."
 						}
 						return@action
 					}
 					StreamerCollection().addData(
-						guild!!.id,
+						guildId,
 						arguments.channel.id,
 						streamer,
 						arguments.role?.id,
 						arguments.message
 					)
-					twitchClient!!.clientHelper.enableStreamEventListener(streamer)
-					respond {
-						content = "Added streamer $streamer"
-					}
+					// Ensure listener is enabled (also handled in repository on first subscription)
+					twitchClient?.clientHelper?.enableStreamEventListener(streamer)
+					respond { content = "Added streamer $streamer" }
 				}
 			}
 
@@ -67,12 +71,11 @@ class StreamerCommand : Extension() {
 				}
 				action {
 					val streamer = arguments.streamer
+					// Remove all subscriptions across guilds for this streamer
 					StreamerCollection().collection.findOne(StreamerData::name eq streamer)?.servers?.forEach {
 						StreamerCollection().removeData(it.guildId, it.channelId, streamer, it.roleId, it.liveMessage)
 					}
-					respond {
-						content = "Removed streamer $streamer"
-					}
+					respond { content = "Removed streamer $streamer" }
 				}
 			}
 
@@ -88,12 +91,15 @@ class StreamerCommand : Extension() {
 					val data = StreamerCollection().collection.findOne(StreamerData::name eq streamer)
 					if (data != null) {
 						val servers = data.servers
-						val guildId = guild!!.id
+						val guildId = guild?.id ?: run {
+							respond { content = "Guild context missing" }
+							return@action
+						}
 						val roleId = arguments.role
 						val channelId = arguments.channel
 						val message = arguments.message
 						val temp = servers.find { it.guildId == guildId }
-						if (roleId?.id== guildId) {
+						if (roleId?.id == guildId) {
 							respond {
 								content = "This action would implement a everyone ping, which is due to how role pings are implemented right now not possible. If you want to make an everyone ping regardless, make a role-less ping and write the everyone ping manually."
 							}
@@ -109,18 +115,12 @@ class StreamerCommand : Extension() {
 							if (message != null) {
 								StreamerCollection().updateData(streamer, message, guildId)
 							}
-							respond {
-								content = "Updated streamer $streamer"
-							}
+							respond { content = "Updated streamer $streamer" }
 						} else {
-							respond {
-								content = "No server associated with the guildId"
-							}
+							respond { content = "No server associated with the guildId" }
 						}
 					} else {
-						respond {
-							content = "No StreamerData associated with the streamerName"
-						}
+						respond { content = "No StreamerData associated with the streamerName" }
 					}
 				}
 			}
