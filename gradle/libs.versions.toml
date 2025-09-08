@@ -11,7 +11,7 @@ twitch4j = "1.25.0"
 events4j = "0.12.2"
 kx-coroutines = "1.10.2"
 kmongo = "5.2.1"
-kordex-gradle = "1.7.1"
+kordex-gradle = "1.7.2"
 
 [libraries]
 groovy = { module = "org.codehaus.groovy:groovy", version.ref = "groovy" }

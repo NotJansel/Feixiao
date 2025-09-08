@@ -48,7 +48,7 @@ distributions {
 
 
 kordEx {
-	kordExVersion = "2.3.1-SNAPSHOT"
+	kordExVersion = "2.3.5-SNAPSHOT"
 	jvmTarget = 21
 	ignoreIncompatibleKotlinVersion = true
 
