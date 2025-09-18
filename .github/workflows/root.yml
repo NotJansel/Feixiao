@@ -23,7 +23,7 @@ jobs:
         uses: https://github.com/actions/setup-java@v4
 
         with:
-          java-version: 21
+          java-version: 25
           distribution: temurin
 
       - name: "Restore Cache"
@@ -55,9 +55,9 @@ jobs:
         uses: https://github.com/docker/login-action@v3
 
         with:
-          registry: registry.digitalocean.com
-          username: ${{ secrets.DOMAIL }}
-          password: ${{ secrets.DOKEY }}
+          registry: git.jansel.dev
+          username: ${{ secrets.MAIL }}
+          password: ${{ secrets.KEY }}
 
       - name: Build and push
         uses: https://github.com/docker/build-push-action@v6
@@ -65,7 +65,7 @@ jobs:
           context: .
           platforms: linux/amd64,linux/arm64
           push: true
-          tags: registry.digitalocean.com/jansel/feixiao:latest,registry.digitalocean.com/jansel/feixiao:${{ steps.date.outputs.date }}
+          tags: git.jansel.dev/jansel/feixiao:latest,git.jansel.dev/jansel/feixiao:${{ steps.date.outputs.date }}
 
       - name: "Save Cache"
         uses: https://data.forgejo.org/actions/cache/save@v4
