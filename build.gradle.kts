@@ -49,7 +49,6 @@ distributions {
 
 kordEx {
 	kordExVersion = "2.3.5-SNAPSHOT"
-	jvmTarget = 21
 	ignoreIncompatibleKotlinVersion = true
 
 	bot {
@@ -75,7 +74,7 @@ docker {
 		// Each function (aside from comment/emptyLine) corresponds to a Dockerfile instruction.
 		// See: https://docs.docker.com/reference/dockerfile/
 
-		from("openjdk:21-jdk-slim")
+		from("openjdk:25-jdk-slim")
 
 		emptyLine()
 
