@@ -24,7 +24,7 @@ jobs:
 
         with:
           java-version: 25
-          distribution: temurin
+          distribution: zulu
 
       - name: "Restore Cache"
         id: restore-cache
