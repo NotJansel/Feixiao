@@ -23,7 +23,7 @@ jobs:
         uses: https://github.com/actions/setup-java@v5
 
         with:
-          java-version: 25
+          java-version: 24
           distribution: zulu
 
       - name: "Restore Cache"

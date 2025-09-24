@@ -48,9 +48,13 @@ distributions {
 
 
 kordEx {
-	kordExVersion = "2.3.5-SNAPSHOT"
+	kordExVersion = "2.3.6-SNAPSHOT"
 	ignoreIncompatibleKotlinVersion = true
-
+	jvmTarget = 24
+	repositories {
+		maven("https://repo.jansel.dev/snapshots")
+		maven("https://repo.jansel.dev/releases")
+	}
 	bot {
 		// See https://docs.kordex.dev/data-collection.html
 		dataCollection(DataCollection.None)
@@ -74,7 +78,7 @@ docker {
 		// Each function (aside from comment/emptyLine) corresponds to a Dockerfile instruction.
 		// See: https://docs.docker.com/reference/dockerfile/
 
-		from("openjdk:25-jdk-slim")
+		from("openjdk:24-jdk-slim")
 
 		emptyLine()
 
