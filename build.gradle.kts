@@ -51,10 +51,7 @@ kordEx {
 	kordExVersion = "2.3.6-SNAPSHOT"
 	ignoreIncompatibleKotlinVersion = true
 	jvmTarget = 24
-	repositories {
-		maven("https://repo.jansel.dev/snapshots")
-		maven("https://repo.jansel.dev/releases")
-	}
+
 	bot {
 		// See https://docs.kordex.dev/data-collection.html
 		dataCollection(DataCollection.None)
