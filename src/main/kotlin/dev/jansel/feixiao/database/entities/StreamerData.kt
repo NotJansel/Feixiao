@@ -7,7 +7,7 @@ import kotlinx.serialization.Serializable
 data class StreamerData(
 	val name: String,
 	val id: String?,
-	val servers: List<Server>
+	val servers: MutableList<Server>
 )
 
 @Serializable

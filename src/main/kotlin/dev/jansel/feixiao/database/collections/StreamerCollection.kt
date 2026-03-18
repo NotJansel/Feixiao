@@ -53,7 +53,7 @@ class StreamerCollection : KordExKoinComponent {
 			}
 		} else {
 			collection.insertOne(
-				StreamerData(streamerName, getTwitchIdByName(streamerName), listOf(Server(guildId, channelId, roleId, liveMessage)))
+				StreamerData(streamerName, getTwitchIdByName(streamerName), mutableListOf(Server(guildId, channelId, roleId, liveMessage)))
 			)
 			// First ever subscription for this streamer, enable listener
 			twitchClient?.clientHelper?.enableStreamEventListener(streamerName)
@@ -148,7 +148,8 @@ class StreamerCollection : KordExKoinComponent {
 	) {
 		val coll = collection.findOne(StreamerData::name eq streamerName)
 		if (coll != null) {
-			val newServers = coll.servers - Server(guildId, channelId, roleId, liveMessage)
+			val newServers = coll.servers
+			newServers.remove(Server(guildId, channelId, roleId, liveMessage))
 			if (newServers.isEmpty()) {
 				collection.deleteOne(StreamerData::name eq streamerName)
 				// Disable Twitch listener when no subscribers remain
