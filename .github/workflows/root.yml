@@ -8,6 +8,8 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
+      - name: debug-sleep
+        run: sleep 300
       - uses: https://github.com/actions/checkout@v7
 
       - name: Set up QEMU
