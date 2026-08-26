@@ -8,16 +8,16 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: https://github.com/actions/checkout@v4
+      - uses: https://github.com/actions/checkout@v7
 
       - name: Set up QEMU
         uses: https://github.com/docker/setup-qemu-action@v4
 
       - name: Set up Docker Buildx
-        uses: https://github.com/docker/setup-buildx-action@v3
+        uses: https://github.com/docker/setup-buildx-action@v4
 
       - name: Set up Java
-        uses: https://github.com/actions/setup-java@v4
+        uses: https://github.com/actions/setup-java@v6
 
         with:
           java-version: 21
@@ -34,7 +34,7 @@ jobs:
         run: "./gradlew build"
 
       - name: Login to Registry
-        uses: https://github.com/docker/login-action@v3
+        uses: https://github.com/docker/login-action@v4
 
         with:
           registry: git.jansel.dev
@@ -42,7 +42,7 @@ jobs:
           password: ${{ secrets.KEY }}
 
       - name: Build and push
-        uses: https://github.com/docker/build-push-action@v5
+        uses: https://github.com/docker/build-push-action@v7
         with:
           context: .
           platforms: linux/amd64,linux/arm64
